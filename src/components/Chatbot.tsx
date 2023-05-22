@@ -7,6 +7,7 @@ import {
 } from "./ui/accordion";
 import ChatbotHeader from "./ChatbotHeader";
 import ChatbotInput from "./ChatbotInput";
+import ChatbotMessages from "./ChatbotMessages";
 
 const ChatBot: FC = () => {
   return (
@@ -22,8 +23,8 @@ const ChatBot: FC = () => {
           </AccordionTrigger>
           <AccordionContent>
             <div className="flex flex-col h-80">
-              messages
-              <ChatbotInput />
+              <ChatbotMessages className="px-2 py-3 flex-1" />
+              <ChatbotInput className="px-4" />
             </div>
           </AccordionContent>
         </div>
