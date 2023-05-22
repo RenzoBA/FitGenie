@@ -25,3 +25,24 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.scrollbar-w-2::-webkit-scrollbar {
+  width: 0.3rem;
+  height: 0.3rem;
+}
+
+.scrollbar-track-blue-lighter::-webkit-scrollbar-track {
+  --b-opacity: 1;
+  background-color: rgb(247, 250, 253);
+  background-color: rgba(247, 250, 253, var(--b-opacity));
+}
+
+.scrollbar-thumb-blue::-webkit-scrollbar-thumb {
+  --b-opacity: 0.4;
+  background-color: rgb(10, 102, 194);
+  background-color: rgba(10, 102, 194, var(--b-opacity));
+}
+
+.scrollbar-thumb-rounded::-webkit-scrollbar-thumb {
+  border-radius: 0.3rem;
+}
