@@ -3,12 +3,13 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Provider from "@/components/Provider";
 import { ReactNode } from "react";
+import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "FitGenie",
-  description: "Your fitness app of custom workouts",
+  description: "Your fitness coach app of custom workouts",
 };
 
 interface RootLayoutProps {
@@ -20,8 +21,9 @@ const RootLayout = ({ children }: RootLayoutProps) => {
     <html lang="en">
       <Provider>
         <body className={inter.className}>
-          <Chatbot />
+          <Header />
           {children}
+          <Chatbot />
         </body>
       </Provider>
     </html>
