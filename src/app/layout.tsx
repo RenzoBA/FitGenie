@@ -4,6 +4,9 @@ import { Inter } from "next/font/google";
 import Provider from "@/components/Provider";
 import { ReactNode } from "react";
 import Header from "@/components/Header";
+import { Toaster } from "@/components/Toaster";
+import { cn } from "@/lib/utils";
+import Theme from "@/components/Theme";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +23,18 @@ const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang="en">
       <Provider>
-        <body className={inter.className}>
-          <Header />
-          {children}
-          <Chatbot />
+        <body
+          className={cn(
+            inter.className,
+            "overflow-auto scrollbar-thumb-border scrollbar-thumb-rounded scrollbar-track-transparent scrollbar-thin scrolling-touch"
+          )}
+        >
+          <Theme attribute="class" defaultTheme="system" enableSystem>
+            <Header />
+            {children}
+            <Chatbot />
+            <Toaster />
+          </Theme>
         </body>
       </Provider>
     </html>

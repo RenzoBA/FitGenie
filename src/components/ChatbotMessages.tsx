@@ -16,7 +16,7 @@ const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, ...props }) => {
     <div
       {...props}
       className={cn(
-        "flex flex-col-reverse gap-3 overflow-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch",
+        "flex flex-col-reverse gap-3 overflow-auto scrollbar-thumb-border scrollbar-thumb-rounded scrollbar-track-transparent scrollbar scrollbar-w-2 scrolling-touch",
         className
       )}
     >
@@ -30,13 +30,13 @@ const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, ...props }) => {
           >
             <div
               className={cn(
-                "flex flex-col space-y-2 text-sm max-w-xs mx-2 overflow-x-hidden rounded-t-lg p-3",
+                "flex flex-col space-y-2 text-sm max-w-[90%] mx-2 overflow-x-hidden rounded-t-lg p-3",
                 {
-                  "bg-blue-600 text-white rounded-l-lg": message.isUserMessage,
+                  "bg-accent-foreground text-primary-foreground rounded-l-lg":
+                    message.isUserMessage,
                 },
                 {
-                  "bg-gray-200 text-gray-900 rounded-r-lg":
-                    !message.isUserMessage,
+                  "bg-accent text-primary rounded-r-lg": !message.isUserMessage,
                 }
               )}
             >

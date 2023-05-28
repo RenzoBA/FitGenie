@@ -18,9 +18,9 @@ const Section: FC<SectionProps> = ({ path, children }) => {
     <Link
       href={path}
       className={cn(
-        "uppercase tracking-wider text-zinc-500 bg-clip-text bg-gradient-to-r hover:from-red-400 hover:to-green-400 hover:text-opacity-0 transition-all",
+        "uppercase tracking-wider text-muted-foreground hover:text-primary transition-all",
         {
-          " from-red-400 to-green-400 text-opacity-0": path === currentPath,
+          " text-primary": path === currentPath,
         }
       )}
     >

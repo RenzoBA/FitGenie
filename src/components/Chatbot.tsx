@@ -13,8 +13,8 @@ const ChatBot: FC = () => {
   return (
     <Accordion type="single" collapsible className="relative z-40 shadow">
       <AccordionItem value="item-1">
-        <div className="fixed left-[20%] bottom-8 w-3/5 bg-white border border-gray-200 rounded-md overflow-hidden">
-          <AccordionTrigger className="px-4 border-b border-zinc-300">
+        <div className="fixed left-[20%] bottom-8 w-3/5 backdrop-blur-lg border border-input rounded-md overflow-hidden">
+          <AccordionTrigger className="px-4 border-b border-input">
             <ChatbotHeader />
           </AccordionTrigger>
           <AccordionContent>

@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 interface User {
   name: string;
@@ -25,6 +26,7 @@ interface User {
 }
 
 const UserForm: FC = () => {
+  const { toast } = useToast();
   const [userData, setUserData] = useState<User>({
     name: "",
     age: "",
@@ -61,14 +63,16 @@ const UserForm: FC = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     console.log(userData);
+    toast({
+      title: "Updated successfully",
+      description: "Your info was updated",
+    });
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid w-full items-center gap-2">
-        <Label htmlFor="name" className="text-white">
-          Name
-        </Label>
+        <Label htmlFor="name">Name</Label>
         <Input
           type="text"
           id="name"
@@ -83,15 +87,15 @@ const UserForm: FC = () => {
       </div>
 
       <div className="grid w-full items-center gap-2">
-        <Label htmlFor="age" className="text-white">
-          Age
-        </Label>
+        <Label htmlFor="age">Age</Label>
         <Input
           type="number"
           id="age"
           placeholder="Age"
           value={userData.age}
           onChange={handleChange}
+          min={18}
+          max={60}
           className="w-52"
         />
         <p className="text-sm text-muted-foreground">
@@ -106,16 +110,18 @@ const UserForm: FC = () => {
         onValueChange={handleChange}
         className="grid w-full items-center gap-2"
       >
-        <Label htmlFor="sex" className="text-white">
-          Sex
-        </Label>
+        <Label htmlFor="sex">Sex</Label>
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="male" id="male" />
-          <Label htmlFor="male">Male</Label>
+          <Label htmlFor="male" className="font-normal">
+            Male
+          </Label>
         </div>
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="female" id="female" />
-          <Label htmlFor="female">Female</Label>
+          <Label htmlFor="female" className="font-normal">
+            Female
+          </Label>
         </div>
         <p className="text-sm text-muted-foreground">
           This is the sex that will be used to customized your workout routines.
@@ -123,9 +129,7 @@ const UserForm: FC = () => {
       </RadioGroup>
 
       <div className="grid w-full items-center gap-2">
-        <Label htmlFor="height" className="text-white">
-          Height
-        </Label>
+        <Label htmlFor="height">Height</Label>
         <Input
           type="number"
           id="height"
@@ -140,9 +144,7 @@ const UserForm: FC = () => {
       </div>
 
       <div className="grid w-full items-center gap-2">
-        <Label htmlFor="weight" className="text-white">
-          Weight
-        </Label>
+        <Label htmlFor="weight">Weight</Label>
         <Input
           type="number"
           id="weight"
@@ -161,9 +163,7 @@ const UserForm: FC = () => {
         className="flex flex-col gap-3 items-center col-start-1 col-end-5 w-full"
       >
         <div className="grid w-full items-center gap-2">
-          <Label htmlFor="level" className="text-white">
-            Level
-          </Label>
+          <Label htmlFor="level">Level</Label>
           <Select value={userData.level} onValueChange={handleChange}>
             <SelectTrigger className="w-52">
               <SelectValue placeholder="Select your level" />
@@ -180,7 +180,7 @@ const UserForm: FC = () => {
             routines.
           </p>
         </div>
-        <ul className="text-[0.7rem] space-y-1">
+        <ul className="text-[0.7rem] space-y-1 text-muted-foreground">
           <li>
             * Beginner Level (0-6 months): individuals who are in the early
             stages of their training. They are beginners who are still getting
@@ -209,12 +209,10 @@ const UserForm: FC = () => {
       </div>
 
       <div className="grid w-full items-center gap-2">
-        <Label htmlFor="goal" className="text-white">
-          Goal
-        </Label>
+        <Label htmlFor="goal">Goal</Label>
         <Textarea
           id="goal"
-          placeholder={`Ex: "Reduce 10 lb in 2 months going 3 times per week to the gym", "strenght my legs in my house training with dummbells", "run 10 km in 30 minutes".`}
+          placeholder={`Examples: "Reduce 10 lb in 2 months by going to the gym 3 times a week", "Strengthen my legs by training with dumbbells at home", "Run 10 km in 30 minutes".`}
           value={userData.goal}
           onChange={handleChange}
           rows={5}
@@ -225,7 +223,7 @@ const UserForm: FC = () => {
         </p>
       </div>
 
-      <Button type="submit" variant="secondary" className="w-full text-white">
+      <Button type="submit" variant="outline" className="w-full">
         Save
       </Button>
     </form>
