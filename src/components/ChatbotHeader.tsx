@@ -1,9 +1,7 @@
 import { FC } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
-type Props = {};
-
-const ChatbotHeader: FC = (props: Props) => {
+const ChatbotHeader: FC = () => {
   return (
     <div className="w-full gap-3 flex justify-start items-center">
       <Avatar>

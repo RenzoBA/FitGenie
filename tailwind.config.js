@@ -18,6 +18,7 @@ export const theme = {
       input: "hsl(var(--input))",
       ring: "hsl(var(--ring))",
       background: "hsl(var(--background))",
+      backgroundComment: "hsl(224 71% 4%)",
       foreground: "hsl(var(--foreground))",
       primary: {
         DEFAULT: "hsl(var(--primary))",

@@ -10,7 +10,7 @@ interface SectionProps {
   children: ReactNode;
 }
 
-const Section: FC<SectionProps> = ({ path, children }) => {
+const SectionButton: FC<SectionProps> = ({ path, children }) => {
   const currentPath = usePathname();
   console.log(currentPath);
 
@@ -29,4 +29,4 @@ const Section: FC<SectionProps> = ({ path, children }) => {
   );
 };
 
-export default Section;
+export default SectionButton;

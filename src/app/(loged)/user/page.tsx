@@ -1,7 +1,8 @@
 import UserForm from "@/components/UserForm";
+import { NextPage } from "next";
 import React from "react";
 
-const UserPage = () => {
+const UserPage: NextPage = () => {
   return (
     <div className="absolute inset-x-0 py-36 flex flex-col justify-start items-center text-center px-10">
       <div>

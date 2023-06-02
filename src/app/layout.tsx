@@ -6,7 +6,8 @@ import { ReactNode } from "react";
 import Header from "@/components/Header";
 import { Toaster } from "@/components/Toaster";
 import { cn } from "@/lib/utils";
-import Theme from "@/components/Theme";
+import Theme from "@/components/ThemeProvider";
+import Auth from "@/components/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,10 +31,12 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           )}
         >
           <Theme attribute="class" defaultTheme="system" enableSystem>
-            <Header />
-            {children}
-            <Chatbot />
-            <Toaster />
+            <Auth>
+              <Header />
+              {children}
+              {/* <Chatbot /> */}
+              <Toaster />
+            </Auth>
           </Theme>
         </body>
       </Provider>
