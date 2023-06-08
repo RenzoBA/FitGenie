@@ -17,77 +17,80 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const SignButton: FC = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
-  if (!session) {
+  if (status === "authenticated") {
     return (
-      <div className="flex gap-2">
-        <Link href="/signup" className={buttonVariants({ variant: "outline" })}>
-          Sign up
-        </Link>
-      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild className="cursor-pointer">
+          <Avatar>
+            <AvatarImage src={session.user?.image!} alt="" />
+            <AvatarFallback className="uppercase">
+              {session.user?.name?.split(" ")[0][0]}
+            </AvatarFallback>
+          </Avatar>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="absolute -right-4 top-2">
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <div className="flex flex-row gap-2 items-center">
+                <Avatar>
+                  <AvatarImage src={session.user?.image!} alt="" />
+                  <AvatarFallback className="uppercase">
+                    {session.user?.name?.split(" ")[0][0]}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <p>"{session.user?.name}"</p>
+                  <p className="text-xs">{session.user?.email}</p>
+                </div>
+              </div>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <div className="flex flew-row gap-1">
+                <User size={18} />
+                <span>Profile</span>
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuItem disabled>
+              <div className="flex flew-row gap-1">
+                <CreditCard size={18} />
+                <span>Billing</span>
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <div className="flex flew-row gap-1">
+                <Bug size={18} />
+                <span>Report</span>
+              </div>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <button onClick={() => signOut()} className="flex flew-row gap-1">
+              <LogOut size={18} />
+              <span>Log out</span>
+            </button>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     );
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild className="cursor-pointer">
-        <Avatar>
-          <AvatarImage src={session.user?.image!} alt="" />
-          <AvatarFallback className="uppercase">
-            {session.user?.name?.split(" ")[0][0]}
-          </AvatarFallback>
-        </Avatar>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="absolute -right-4 top-2">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <div className="flex flex-row gap-2 items-center">
-              <Avatar>
-                <AvatarImage src={session.user?.image!} alt="" />
-                <AvatarFallback className="uppercase">
-                  {session.user?.name?.split(" ")[0][0]}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <p>"{session.user?.name}"</p>
-                <p className="text-xs">{session.user?.email}</p>
-              </div>
-            </div>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <div className="flex flew-row gap-1">
-              <User size={18} />
-              <span>Profile</span>
-            </div>
-          </DropdownMenuItem>
-          <DropdownMenuItem disabled>
-            <div className="flex flew-row gap-1">
-              <CreditCard size={18} />
-              <span>Billing</span>
-            </div>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <div className="flex flew-row gap-1">
-              <Bug size={18} />
-              <span>Report</span>
-            </div>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <button onClick={() => signOut()} className="flex flew-row gap-1">
-            <LogOut size={18} />
-            <span>Log out</span>
-          </button>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex gap-2">
+      <Link
+        href="/auth/signup"
+        className={buttonVariants({ variant: "outline" })}
+      >
+        Sign up
+      </Link>
+    </div>
   );
 };
 

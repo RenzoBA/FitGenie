@@ -9,7 +9,7 @@ import React from "react";
 const page: NextPage = () => {
   return (
     <div className="flex flex-row h-screen">
-      <div className="relative hidden h-full flex-col bg-muted p-10 text-white border border-muted-foreground lg:flex w-[55%]">
+      <div className="relative hidden h-full flex-col bg-muted p-10 text-white border border-muted-foreground lg:flex lg:w-[55%]">
         <Image
           src="/assets/fg-coach.jpeg"
           alt="authentication"
@@ -21,15 +21,15 @@ const page: NextPage = () => {
           <blockquote className="space-y-2">
             <span className="text-lg bg-backgroundComment p-1.5">
               &ldquo;The new way to be healthy! FitGenie customized all my
-              workouts routines, regardless if I do it in the gym or in my home.
-              It's cool!&rdquo;
+              workouts routines, regardless of whether I do it at the gym or at
+              home. It's great!&rdquo;
             </span>
             <footer className="text-sm">Sofia Davis</footer>
           </blockquote>
         </div>
       </div>
-      <div className="lg:p-8 z-60 h-full w-[45%]">
-        <div className="mx-auto flex h-full w-full flex-col justify-center space-y-6 sm:w-[350px]">
+      <div className="lg:p-8 z-60 h-full w-full lg:w-[45%]">
+        <div className="mx-auto flex h-full w-[350px] flex-col justify-center items-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">
               Create an account

@@ -1,9 +1,12 @@
-import NextAuth, {NextAuthOptions} from "next-auth"
+import NextAuth, { NextAuthOptions } from "next-auth"
 import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "@/lib/mongodb";
+
+import { createTransport } from "nodemailer"
+import html from "@/helpers/functions/email-html";
 
 const authOptions: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise),
@@ -11,13 +14,31 @@ const authOptions: NextAuthOptions = {
     EmailProvider({
       server: {
         host: process.env.SMTP_HOST,
-        port: process.env.SMTP_PORT,
+        port: Number(process.env.SMTP_PORT),
         auth: {
           user: process.env.SMTP_USER,
           pass: process.env.SMTP_PASSWORD,
         },
       },
       from: process.env.EMAIL_FROM,
+      async sendVerificationRequest({
+        identifier: email,
+        url,
+        provider: { server, from },
+      }) {
+      const { host } = new URL(url)
+      const transport = createTransport(server)
+      const result = await transport.sendMail({
+        to: email,
+        from: from,
+        subject: `Sign in to FitGenie®`,
+        html: html({ url, host, email }),
+      })
+      const failed = result.rejected.concat(result.pending).filter(Boolean)
+      if (failed.length) {
+        throw new Error(`Email (${failed.join(", ")}) could not be sent`)
+      }
+      }
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -36,6 +57,19 @@ const authOptions: NextAuthOptions = {
     }),
     // ...add more providers here
   ],
+  pages: {
+    verifyRequest: '/auth/verify-request',
+    signIn: '/auth/signup'
+  },
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url
+      return baseUrl
+    }
+  }
 }
 
 const handler = NextAuth(authOptions)

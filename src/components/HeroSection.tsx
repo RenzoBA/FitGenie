@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import ChatbotDisabled from "./ChatbotDisabled";
+import Chatbot from "./Chatbot";
 
 type Props = {};
 
@@ -34,7 +34,7 @@ const HeroSection = (props: Props) => {
           />
         </div>
       </div>
-      <ChatbotDisabled />
+      <Chatbot />
     </div>
   );
 };
