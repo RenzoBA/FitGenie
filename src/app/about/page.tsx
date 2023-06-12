@@ -8,11 +8,9 @@ const AboutPage: NextPage = () => {
         <h1 className="text-6xl font-black text-primary">
           FitGenie<span className="text-2xl align-top">&reg;</span>
         </h1>
-        <p className="text-2xl font-light text-muted-foreground mt-5 tracking-widest">
-          ABOUT
-        </p>
+        <h2 className="text-2xl text-primary mt-5 tracking-widest">ABOUT</h2>
       </div>
-      <div className="font-light text-muted-foreground mt-3 leading-relaxed space-y-5 max-w-3xl">
+      <div className="text-justify text-muted-foreground mt-3 leading-relaxed space-y-5 max-w-3xl">
         <p>
           We understand that starting in the world of fitness can be
           overwhelming, especially if you feel lost or don't know where to

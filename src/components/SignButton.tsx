@@ -11,7 +11,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { buttonVariants } from "@/components/ui/button";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
-import { Bug, CreditCard, LogOut, User } from "lucide-react";
+import {
+  Bug,
+  CreditCard,
+  Info,
+  Lock,
+  LogOut,
+  Scroll,
+  Sheet,
+  User,
+} from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -52,25 +61,49 @@ const SignButton: FC = () => {
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem>
-              <div className="flex flew-row gap-1">
+              <Link href="/user" className="flex flew-row gap-1">
                 <User size={18} />
                 <span>Profile</span>
-              </div>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem disabled>
-              <div className="flex flew-row gap-1">
+              <Link href="" className="flex flew-row gap-1">
                 <CreditCard size={18} />
                 <span>Billing</span>
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <div className="flex flew-row gap-1">
-                <Bug size={18} />
-                <span>Report</span>
-              </div>
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <Link href="/report" className="flex flew-row gap-1">
+              <Bug size={18} />
+              <span>Report</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <Link href="/about" className="flex flew-row gap-1">
+                <Info size={18} />
+                <span>About</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href="/privacy" className="flex flew-row gap-1">
+                <Lock size={18} />
+                <span>Privacy</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href="/terms" className="flex flew-row gap-1">
+                <Scroll size={18} />
+                <span>Terms</span>
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+
+          <DropdownMenuSeparator />
+
           <DropdownMenuItem>
             <button onClick={() => signOut()} className="flex flew-row gap-1">
               <LogOut size={18} />
