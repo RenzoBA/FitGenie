@@ -1,1 +1,0 @@
-export const userData = "My name is Brusko and I am an 18-year-old boy. I want to lose some weight because I am 1.60 m tall and my current weight is 80 kg. I have been going to the gym for 1 week but I do not know any workout routines. I am a beginner."

@@ -1,8 +1,6 @@
-import React from "react";
+import { NextPage } from "next";
 
-type Props = {};
-
-const page = (props: Props) => {
+const page: NextPage = () => {
   return (
     <div className="absolute inset-x-0 py-36 flex flex-col justify-start items-center text-center px-10">
       <div>

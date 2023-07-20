@@ -1,14 +1,14 @@
 import ChatBot from "@/components/Chatbot";
 import HeroSection from "@/components/HeroSection";
+import { NextPage } from "next";
 
-export default function Home() {
+const page: NextPage = () => {
   return (
     <main className="flex flex-col justify-center items-center">
       <HeroSection />
-      <HeroSection />
-      <ChatBot />
-
       {/* add more sections... */}
     </main>
   );
-}
+};
+
+export default page;

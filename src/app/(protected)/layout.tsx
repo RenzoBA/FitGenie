@@ -1,3 +1,5 @@
+import ChatBot from "@/components/Chatbot";
+import ProtectedProvider from "@/components/ProtectedProvider";
 import { ReactNode } from "react";
 
 interface layoutProps {
@@ -5,7 +7,7 @@ interface layoutProps {
 }
 
 const layout = ({ children }: layoutProps) => {
-  return <div>{children}</div>;
+  return <ProtectedProvider>{children}</ProtectedProvider>;
 };
 
 export default layout;

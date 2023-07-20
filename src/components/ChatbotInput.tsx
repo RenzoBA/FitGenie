@@ -1,6 +1,7 @@
 "use client";
 
 import { MessagesContext } from "@/context/messages";
+import { UserProtectedContext } from "@/context/user-protected";
 import { cn } from "@/lib/utils";
 import { Message } from "@/lib/validators/message";
 import { useMutation } from "@tanstack/react-query";
@@ -19,17 +20,20 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
     updateMessage,
     setIsMessageUpdating,
   } = useContext(MessagesContext);
+
+  const { data, params } = useContext(UserProtectedContext);
+
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const { mutate: sendMessage, isLoading } = useMutation({
     mutationKey: ["sendMessage"],
-    mutationFn: async (message: Message) => {
+    mutationFn: async (_message: Message) => {
       const res = await fetch("/api/message", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ messages: [message] }),
+        body: JSON.stringify({ data, params, messages }),
       });
       return res.body;
     },
@@ -67,6 +71,11 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
       setTimeout(() => {
         textareaRef.current?.focus();
       }, 10);
+    },
+    onError: (_, message) => {
+      alert("Something went wrong. Please try again.");
+      removeMessage(message.id);
+      textareaRef.current?.focus();
     },
   });
 

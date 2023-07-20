@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, FC, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "./ui/textarea";
@@ -8,26 +8,39 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { User } from "@/types/user";
+import { useMutation } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
+import { Loader2 } from "lucide-react";
+import { UserProtectedContext } from "@/context/user-protected";
 
-interface User {
-  name: string;
-  age: string;
-  sex: string;
-  height: string;
-  weight: string;
-  level: string;
-  goal: string;
-}
+const UserForm = () => {
+  const { data, userLoading } = useContext(UserProtectedContext);
 
-const UserForm: FC = () => {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
+  const { mutate: updateUser, isLoading: updateUserLoading } = useMutation({
+    mutationKey: ["userID"],
+    mutationFn: async (user: User) => {
+      const res = await fetch(`/api/user?id=${id}`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+      return res.body;
+    },
+  });
+
   const { toast } = useToast();
   const [userData, setUserData] = useState<User>({
     name: "",
@@ -37,6 +50,7 @@ const UserForm: FC = () => {
     weight: "",
     level: "",
     goal: "",
+    motivation: "",
   });
 
   const handleChange = (
@@ -64,7 +78,7 @@ const UserForm: FC = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(userData);
+    updateUser(userData);
     toast({
       title: "Updated successfully",
       description: "Your info was updated",
@@ -73,14 +87,17 @@ const UserForm: FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="grid w-full items-center gap-2">
+      <div className="grid items-center gap-2">
         <Label htmlFor="name">Name</Label>
         <Input
+          autoFocus
+          disabled={userLoading || updateUserLoading}
           type="text"
           id="name"
           placeholder="Name"
-          value={userData.name}
+          value={userData.name || data?.user?.name}
           onChange={handleChange}
+          className="w-96"
         />
         <p className="text-sm text-muted-foreground">
           This is the name that will be used by FitGenie Coach to communicate
@@ -91,10 +108,11 @@ const UserForm: FC = () => {
       <div className="grid w-full items-center gap-2">
         <Label htmlFor="age">Age</Label>
         <Input
+          disabled={userLoading || updateUserLoading}
           type="number"
           id="age"
           placeholder="Age"
-          value={userData.age}
+          value={userData.age || data?.user?.age}
           onChange={handleChange}
           min={18}
           max={60}
@@ -105,10 +123,42 @@ const UserForm: FC = () => {
         </p>
       </div>
 
+      <div className="grid w-full items-center gap-2">
+        <Label htmlFor="height">Height</Label>
+        <Input
+          disabled={userLoading || updateUserLoading}
+          type="number"
+          id="height"
+          placeholder="Height (ft)"
+          value={userData.height || data?.user?.height}
+          onChange={handleChange}
+          className="w-52"
+        />
+        <p className="text-sm text-muted-foreground">
+          This is the height that will be used to evaluate your progress.
+        </p>
+      </div>
+
+      <div className="grid w-full items-center gap-2">
+        <Label htmlFor="weight">Weight</Label>
+        <Input
+          disabled={userLoading || updateUserLoading}
+          type="number"
+          id="weight"
+          placeholder="Weight (lb)"
+          value={userData.weight || data?.user?.weight}
+          onChange={handleChange}
+          className="w-52"
+        />
+        <p className="text-sm text-muted-foreground">
+          This is the height that will be used to evaluate your progress.
+        </p>
+      </div>
+
       <RadioGroup
-        defaultValue="male"
+        disabled={userLoading || updateUserLoading}
         id="sex"
-        value={userData.sex}
+        value={userData.sex || data?.user?.sex}
         onValueChange={handleChange}
         className="grid w-full items-center gap-2"
       >
@@ -130,43 +180,17 @@ const UserForm: FC = () => {
         </p>
       </RadioGroup>
 
-      <div className="grid w-full items-center gap-2">
-        <Label htmlFor="height">Height</Label>
-        <Input
-          type="number"
-          id="height"
-          placeholder="Height (ft)"
-          value={userData.height}
-          onChange={handleChange}
-          className="w-52"
-        />
-        <p className="text-sm text-muted-foreground">
-          This is the height that will be used to evaluate your progress.
-        </p>
-      </div>
-
-      <div className="grid w-full items-center gap-2">
-        <Label htmlFor="weight">Weight</Label>
-        <Input
-          type="number"
-          id="weight"
-          placeholder="Weight (lb)"
-          value={userData.weight}
-          onChange={handleChange}
-          className="w-52"
-        />
-        <p className="text-sm text-muted-foreground">
-          This is the height that will be used to evaluate your progress.
-        </p>
-      </div>
-
       <div
         id="level"
         className="flex flex-col gap-3 items-center col-start-1 col-end-5 w-full"
       >
         <div className="grid w-full items-center gap-2">
           <Label htmlFor="level">Level</Label>
-          <Select value={userData.level} onValueChange={handleChange}>
+          <Select
+            disabled={userLoading || updateUserLoading}
+            value={userData.level || data?.user?.level}
+            onValueChange={handleChange}
+          >
             <SelectTrigger className="w-52">
               <SelectValue placeholder="Select level" />
             </SelectTrigger>
@@ -213,20 +237,41 @@ const UserForm: FC = () => {
       <div className="grid w-full items-center gap-2">
         <Label htmlFor="goal">Goal</Label>
         <Textarea
+          disabled={userLoading || updateUserLoading}
           id="goal"
           placeholder={`Examples: "Reduce 10 lb in 2 months by going to the gym 3 times a week", "Strengthen my legs by training with dumbbells at home", "Run 10 km in 30 minutes".`}
-          value={userData.goal}
+          value={userData.goal || data?.user?.goal}
           onChange={handleChange}
           rows={5}
         />
         <p className="text-sm text-muted-foreground">
           This is the goal that will be considered to customize the FitGenie
-          Coach answers.
+          Coach answers. Please be detailed.
+        </p>
+      </div>
+
+      <div className="grid w-full items-center gap-2">
+        <Label htmlFor="motivation">Motivation</Label>
+        <Textarea
+          disabled={userLoading || updateUserLoading}
+          id="motivation"
+          placeholder={`Examples: "Arrive in good shape for the next summer", "Win my first triathlon competition", "Impress my ex ;)".`}
+          value={userData.motivation || data?.user?.motivation}
+          onChange={handleChange}
+          rows={5}
+        />
+        <p className="text-sm text-muted-foreground">
+          This is the motivation that will be considered to customize the
+          FitGenie Coach answers. Please be detailed.
         </p>
       </div>
 
       <Button type="submit" variant="outline" className="w-full">
-        Save
+        {updateUserLoading ? (
+          <Loader2 className="w-3 h-3 animate-spin" />
+        ) : (
+          "Save"
+        )}
       </Button>
     </form>
   );

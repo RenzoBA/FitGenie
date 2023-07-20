@@ -1,8 +1,7 @@
 import MessageAlert from "@/components/MessageAlert";
+import { NextPage } from "next";
 
-type Props = {};
-
-const page = (props: Props) => {
+const page: NextPage = () => {
   return (
     <div className="h-screen flex justify-center items-center px-8">
       <MessageAlert

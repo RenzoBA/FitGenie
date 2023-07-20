@@ -12,3 +12,5 @@ const Auth = ({ children }: AuthProps) => {
 };
 
 export default Auth;
+
+//check components & improve prompts

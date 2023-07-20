@@ -1,8 +1,8 @@
 const html = (params: { url: string; host: string; email: string }) => {
-  const { url, host, email } = params
+  const { url, host, email } = params;
 
-  const escapedEmail = `${email.replace(/\./g, "&#8203;.")}`
-  const signinEmailRoute = "http://localhost:3000/signin-email"
+  const escapedEmail = `${email.replace(/\./g, "&#8203;.")}`;
+  // const signinEmailRoute = "http://localhost:3000/signin-email"
 
   return `<!DOCTYPE html>
     <html lang="en" xmlns="https://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -10,7 +10,7 @@ const html = (params: { url: string; host: string; email: string }) => {
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       <meta name="x-apple-disable-message-reformatting">
-      <title></title>
+      <title>FitGenie App</title>
       <!--[if mso]> 
     <style> 
     table {border-collapse:collapse;border-spacing:0;border:none;margin:0;} 
@@ -68,7 +68,7 @@ const html = (params: { url: string; host: string; email: string }) => {
     </table>
   
     </body>
-    `
-    }
+    `;
+};
 
-export default html
+export default html;

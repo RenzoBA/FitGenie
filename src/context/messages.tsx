@@ -25,7 +25,7 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
     {
       id: crypto.randomUUID(),
       isUserMessage: false,
-      text: "Hello, how can I help you? 😀",
+      text: "Hello big boy, how can I help you? 😀💪",
     },
   ]);
   const [isMessageUpdating, setIsMessageUpdating] = useState<boolean>(false);

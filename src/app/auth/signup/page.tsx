@@ -1,6 +1,4 @@
-import Logo from "@/components/Logo";
 import UserAuthForm from "@/components/UserAuthForm";
-import { Command } from "lucide-react";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,7 +20,7 @@ const page: NextPage = () => {
             <span className="text-lg bg-backgroundComment p-1.5">
               &ldquo;The new way to be healthy! FitGenie customized all my
               workouts routines, regardless of whether I do it at the gym or at
-              home. It's great!&rdquo;
+              home. It&apos;s great!&rdquo;
             </span>
             <footer className="text-sm">Sofia Davis</footer>
           </blockquote>

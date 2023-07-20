@@ -1,4 +1,3 @@
-import Chatbot from "@/components/Chatbot";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import Provider from "@/components/Provider";
@@ -34,7 +33,6 @@ const RootLayout = ({ children }: RootLayoutProps) => {
             <Auth>
               <Header />
               {children}
-              {/* <Chatbot /> */}
               <Toaster />
             </Auth>
           </Theme>

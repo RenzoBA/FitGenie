@@ -1,8 +1,6 @@
 import Image from "next/image";
 
-type Props = {};
-
-const HeroSection = (props: Props) => {
+const HeroSection = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen sm:h-screen relative px-5">
       <h1 className="text-6xl sm:text-8xl font-black text-primary">
@@ -16,13 +14,6 @@ const HeroSection = (props: Props) => {
           Powered by
         </p>
         <div className="flex flex-wrap justify-center gap-4 sm:gap-10">
-          <Image
-            src="/assets/oai-logo.svg"
-            alt="openai-logo"
-            width={120}
-            height={120}
-            className="scale-90 sm:scale-100"
-          />
           <Image
             src="/assets/oai-logo.svg"
             alt="openai-logo"
