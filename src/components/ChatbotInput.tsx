@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { CornerDownLeft, Loader2 } from "lucide-react";
 import { FC, HTMLAttributes, useContext, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
+import { Button } from "./ui/button";
 
 interface ChatbotInputProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -110,7 +111,21 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
             {isLoading ? (
               <Loader2 className="w-3 h-3 animate-spin" />
             ) : (
-              <CornerDownLeft className="w-3 h-3" />
+              <Button
+                variant="ghost"
+                type="submit"
+                className="px-0"
+                onClick={() => {
+                  const message: Message = {
+                    id: crypto.randomUUID(),
+                    isUserMessage: true,
+                    text: input,
+                  };
+                  sendMessage(message);
+                }}
+              >
+                <CornerDownLeft className="w-3 h-3" />
+              </Button>
             )}
           </kbd>
         </div>

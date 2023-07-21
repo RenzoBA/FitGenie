@@ -7,7 +7,7 @@ import React from "react";
 const page: NextPage = () => {
   return (
     <div className="flex flex-row h-screen">
-      <div className="relative hidden h-full flex-col bg-muted p-10 text-white border border-muted-foreground lg:flex lg:w-[55%]">
+      <div className="absolute -z-10 lg:relative w-full h-full flex-col bg-muted p-10 text-white border border-muted-foreground lg:flex lg:w-[55%] blur-sm opacity-10 lg:blur-none lg:opacity-100">
         <Image
           src="/assets/fg-coach.jpeg"
           alt="authentication"
@@ -15,7 +15,7 @@ const page: NextPage = () => {
           height={1280}
           width={843}
         />
-        <div className="relative z-20 mt-auto w-fit">
+        <div className="hidden lg:flex relative z-20 mt-auto w-fit">
           <blockquote className="space-y-2">
             <span className="text-lg bg-backgroundComment p-1.5">
               &ldquo;The new way to be healthy! FitGenie customized all my

@@ -97,7 +97,7 @@ const UserForm = () => {
           placeholder="Name"
           value={userData.name || data?.user?.name}
           onChange={handleChange}
-          className="w-96"
+          className="sm:max-w-[24rem]"
         />
         <p className="text-sm text-muted-foreground">
           This is the name that will be used by FitGenie Coach to communicate
@@ -116,7 +116,7 @@ const UserForm = () => {
           onChange={handleChange}
           min={18}
           max={60}
-          className="w-52"
+          className="sm:max-w-[12rem]"
         />
         <p className="text-sm text-muted-foreground">
           This is the age that will be used to customized your workout routines.
@@ -132,7 +132,7 @@ const UserForm = () => {
           placeholder="Height (ft)"
           value={userData.height || data?.user?.height}
           onChange={handleChange}
-          className="w-52"
+          className="sm:max-w-[12rem]"
         />
         <p className="text-sm text-muted-foreground">
           This is the height that will be used to evaluate your progress.
@@ -148,7 +148,7 @@ const UserForm = () => {
           placeholder="Weight (lb)"
           value={userData.weight || data?.user?.weight}
           onChange={handleChange}
-          className="w-52"
+          className="sm:max-w-[12rem]"
         />
         <p className="text-sm text-muted-foreground">
           This is the height that will be used to evaluate your progress.
@@ -191,7 +191,7 @@ const UserForm = () => {
             value={userData.level || data?.user?.level}
             onValueChange={handleChange}
           >
-            <SelectTrigger className="w-52">
+            <SelectTrigger className="sm:max-w-[12rem]">
               <SelectValue placeholder="Select level" />
             </SelectTrigger>
             <SelectContent>

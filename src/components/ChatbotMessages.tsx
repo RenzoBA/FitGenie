@@ -31,11 +31,12 @@ const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, ...props }) => {
               className={cn(
                 "flex flex-col space-y-2 text-sm max-w-[90%] mx-2 overflow-x-hidden rounded-t-lg p-3",
                 {
-                  "bg-accent-foreground text-primary-foreground rounded-l-lg":
+                  "bg-accent-foreground text-primary-foreground rounded-l-lg text-right":
                     message.isUserMessage,
                 },
                 {
-                  "bg-accent text-primary rounded-r-lg": !message.isUserMessage,
+                  "bg-accent text-primary rounded-r-lg text-left":
+                    !message.isUserMessage,
                 }
               )}
             >

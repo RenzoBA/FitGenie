@@ -20,7 +20,7 @@ const UserAuthForm = ({ className, ...props }: UserAuthFormProps) => {
 
     setTimeout(() => {
       setIsLoading(false);
-      signIn("email", { email });
+      signIn("email", { email, callbackUrl: "/user" });
     }, 1500);
   }
 
