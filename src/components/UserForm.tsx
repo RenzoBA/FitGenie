@@ -19,9 +19,11 @@ import { useMutation } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { UserProtectedContext } from "@/context/user-protected";
+import { useSession } from "next-auth/react";
 
 const UserForm = () => {
   const { data, userLoading } = useContext(UserProtectedContext);
+  const { update } = useSession();
 
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
@@ -29,6 +31,7 @@ const UserForm = () => {
   const { mutate: updateUser, isLoading: updateUserLoading } = useMutation({
     mutationKey: ["userID"],
     mutationFn: async (user: User) => {
+      update();
       const res = await fetch(`/api/user?id=${id}`, {
         method: "PUT",
         headers: {
