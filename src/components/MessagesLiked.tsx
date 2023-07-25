@@ -1,36 +1,27 @@
 "use client";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import MessageLiked from "./MessageLiked";
 import { Message } from "@/lib/validators/message";
 import { useSession } from "next-auth/react";
+import { useContext } from "react";
+import { UserProtectedContext } from "@/context/user-protected";
+import { MessagesContext } from "@/context/messages";
 
 const MessagesLiked = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
+  const { data, refetch } = useContext(UserProtectedContext);
+  const { likeMessage } = useContext(MessagesContext);
 
   const { data: session, status } = useSession();
-
-  const {
-    data: userMessagesLiked,
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["messages-liked-user"],
-    queryFn: async () => {
-      const res = await fetch(`/api/user/messages?id=${id}`);
-      if (!res.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      return res.json();
-    },
-  });
 
   const { mutate: handlerUserMessagesLike } = useMutation({
     mutationKey: ["likeMessage"],
     mutationFn: async (_message: Message) => {
+      likeMessage(_message);
       const res = await fetch(`/api/user/messages?id=${id}`, {
         method: "PUT",
         headers: {
@@ -44,14 +35,14 @@ const MessagesLiked = () => {
     },
   });
 
-  if (isLoading || status === "loading") {
+  if (status === "loading") {
     return <Loader2 className="animate-spin" />;
   }
 
   return (
     <div>
-      <div className="grid grid-flow-row grid-cols-3 gap-5">
-        {userMessagesLiked.map((message: Message) => (
+      <div className="flex gap-5 pb-2 overflow-x-auto scrollbar-thumb-border scrollbar-thumb-rounded scrollbar-track-transparent scrollbar scrollbar-w-2 scrolling-touch scroll-smooth">
+        {data?.user?.messagesLiked!.map((message: Message) => (
           <MessageLiked
             key={message._id}
             session={session!}

@@ -10,7 +10,7 @@ const page = async () => {
         </h1>
         <h2 className="text-2xl text-primary mt-5 tracking-widest">CHAT</h2>
       </div>
-      <div className="text-justify text-muted-foreground mt-3 leading-relaxed space-y-5 max-w-7xl">
+      <div className="text-justify text-muted-foreground mt-3 leading-relaxed space-y-5 max-w-7xl w-full">
         <h3 className="text-lg text-primary tracking-widest">
           Messages saved:
         </h3>

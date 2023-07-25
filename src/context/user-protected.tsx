@@ -1,6 +1,6 @@
 import { Params } from "@/types/params";
 import { User } from "@/types/user";
-import { useQuery } from "@tanstack/react-query";
+import { RefetchOptions, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import {
   Dispatch,
@@ -16,18 +16,20 @@ interface UserProtectedProviderProps {
 
 export const UserProtectedContext = createContext<{
   data: {
-    user: User;
+    user: User | null;
   };
   userLoading: boolean;
+  refetch: (options?: RefetchOptions) => Promise<any>;
   params: {
     mood: "friendly" | "rude";
   };
   setParams: Dispatch<SetStateAction<Params>>;
 }>({
   data: {
-    user: {},
+    user: null,
   },
   userLoading: false,
+  refetch: async () => {},
   params: {
     mood: "friendly",
   },
@@ -42,7 +44,11 @@ export const UserProtectedProvider = ({
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
-  const { data, isLoading: userLoading } = useQuery({
+  const {
+    data,
+    isLoading: userLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["user-detail"],
     queryFn: async () => {
       const res = await fetch(`/api/user?id=${id}`);
@@ -58,6 +64,7 @@ export const UserProtectedProvider = ({
       value={{
         data,
         userLoading,
+        refetch,
         params,
         setParams,
       }}

@@ -5,7 +5,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import ChatbotHeader from "./ChatbotHeader";
 import ChatbotInput from "./ChatbotInput";
 import ChatbotMessages from "./ChatbotMessages";

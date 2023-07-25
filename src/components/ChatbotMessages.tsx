@@ -6,29 +6,21 @@ import { FC, HTMLAttributes, useContext } from "react";
 import MarkdownLite from "./MarkdownLite";
 import { Heart, Share2 } from "lucide-react";
 import { Button } from "./ui/button";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { Message } from "@/lib/validators/message";
+import { UserProtectedContext } from "@/context/user-protected";
 
 interface ChatbotMessagesProps extends HTMLAttributes<HTMLDivElement> {}
 
 const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, ...props }) => {
-  const { messages, likeMessage } = useContext(MessagesContext);
+  const { messages, likeMessage, isMessageUpdating } =
+    useContext(MessagesContext);
+  const { refetch } = useContext(UserProtectedContext);
   const inverseMessages = [...messages].reverse();
 
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
-
-  const { refetch } = useQuery({
-    queryKey: ["messages-liked-user"],
-    queryFn: async () => {
-      const res = await fetch(`/api/user/messages?id=${id}`);
-      if (!res.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      return res.json();
-    },
-  });
 
   const { mutate: handlerUserMessagesLike } = useMutation({
     mutationKey: ["likeMessage"],
@@ -46,6 +38,8 @@ const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, ...props }) => {
       return res.body;
     },
   });
+
+  console.log("messages", inverseMessages);
 
   const handleMessageShare = () => {};
 
@@ -82,6 +76,7 @@ const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, ...props }) => {
               {!message.isUserMessage && (
                 <div className="flex gap-2 self-end">
                   <Button
+                    disabled={isMessageUpdating}
                     onClick={() => handlerUserMessagesLike(message)}
                     variant="ghost"
                     type="button"
@@ -90,14 +85,13 @@ const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, ...props }) => {
                     <Heart
                       size={18}
                       className={cn(
-                        "",
                         { "fill-[#b01e28] text-[#b01e28]": message.like },
                         { "fill-none": !message.like }
                       )}
                     />
                   </Button>
                   <Button
-                    disabled
+                    disabled={isMessageUpdating}
                     onClick={handleMessageShare}
                     variant="ghost"
                     type="button"

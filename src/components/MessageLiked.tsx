@@ -28,7 +28,7 @@ const MessageLiked: FC<MessageLikedProps> = ({
   const limit = 150;
 
   return (
-    <div className="flex flex-col gap-4 border border-input rounded-lg p-5 w-96 h-[230px]">
+    <div className="flex flex-none flex-col gap-4 border border-input rounded-lg p-5 w-80 h-72">
       <div className="flex flex-row items-start justify-between">
         <div className="flex flex-row gap-2 items-center">
           <Avatar>

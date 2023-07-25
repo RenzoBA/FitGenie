@@ -9,6 +9,7 @@ export const MessagesContext = createContext<{
   isMessageUpdating: boolean;
   addMessage: (message: Message) => void;
   likeMessage: (message: Message) => void;
+  dislikeMessage: (message: Message) => void;
   removeMessage: (id: string) => void;
   updateMessage: (id: string, updateFn: (prevText: string) => string) => void;
   setIsMessageUpdating: (isUpdating: boolean) => void;
@@ -17,6 +18,7 @@ export const MessagesContext = createContext<{
   isMessageUpdating: false,
   addMessage: () => {},
   likeMessage: () => {},
+  dislikeMessage: () => {},
   removeMessage: () => {},
   updateMessage: () => {},
   setIsMessageUpdating: () => {},
@@ -38,6 +40,16 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
   };
 
   const likeMessage = (message: Message) => {
+    setMessages((prev) =>
+      prev.map((prevMessage) =>
+        prevMessage._id === message._id
+          ? { ...prevMessage, like: !prevMessage.like }
+          : prevMessage
+      )
+    );
+  };
+
+  const dislikeMessage = (message: Message) => {
     setMessages((prev) =>
       prev.map((prevMessage) =>
         prevMessage === message
@@ -72,6 +84,7 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
         isMessageUpdating,
         addMessage,
         likeMessage,
+        dislikeMessage,
         removeMessage,
         updateMessage,
         setIsMessageUpdating,
