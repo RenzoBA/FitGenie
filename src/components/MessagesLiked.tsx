@@ -53,6 +53,7 @@ const MessagesLiked = () => {
       <div className="grid grid-flow-row grid-cols-3 gap-5">
         {userMessagesLiked.map((message: Message) => (
           <MessageLiked
+            key={message._id}
             session={session!}
             message={message}
             handlerUserMessagesLike={handlerUserMessagesLike}
