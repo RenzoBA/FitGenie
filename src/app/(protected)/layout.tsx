@@ -1,4 +1,3 @@
-import ChatBot from "@/components/Chatbot";
 import ProtectedProvider from "@/components/ProtectedProvider";
 import { ReactNode } from "react";
 

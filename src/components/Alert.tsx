@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FC } from "react";
 
-interface MessageAlertProps {
+interface AlertProps {
   label: string;
   description: string;
   link?: {
@@ -10,9 +10,9 @@ interface MessageAlertProps {
   };
 }
 
-const MessageAlert: FC<MessageAlertProps> = ({ label, description }) => {
+const Alert: FC<AlertProps> = ({ label, description }) => {
   return (
-    <div className="space-y-4 text-center">
+    <div className="flex flex-col gap-4 items-center text-center">
       <div className="flex flex-row gap-2 items-center">
         <Avatar>
           <AvatarImage src="/assets/fg-coach.jpeg" alt="fg-coach" />
@@ -25,4 +25,4 @@ const MessageAlert: FC<MessageAlertProps> = ({ label, description }) => {
   );
 };
 
-export default MessageAlert;
+export default Alert;

@@ -1,3 +1,5 @@
+import { Message } from "@/lib/validators/message";
+
 export interface User {
   _id?: string;
   name?: string;
@@ -11,4 +13,5 @@ export interface User {
   level?: string;
   goal?: string;
   motivation?: string;
+  messagesLiked?: Message[];
 }

@@ -8,6 +8,7 @@ export const MessagesContext = createContext<{
   messages: Message[];
   isMessageUpdating: boolean;
   addMessage: (message: Message) => void;
+  likeMessage: (message: Message) => void;
   removeMessage: (id: string) => void;
   updateMessage: (id: string, updateFn: (prevText: string) => string) => void;
   setIsMessageUpdating: (isUpdating: boolean) => void;
@@ -15,6 +16,7 @@ export const MessagesContext = createContext<{
   messages: [],
   isMessageUpdating: false,
   addMessage: () => {},
+  likeMessage: () => {},
   removeMessage: () => {},
   updateMessage: () => {},
   setIsMessageUpdating: () => {},
@@ -23,9 +25,10 @@ export const MessagesContext = createContext<{
 export const MessagesProvider = ({ children }: MessagesProviderProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: crypto.randomUUID(),
+      _id: crypto.randomUUID(),
       isUserMessage: false,
-      text: "Hello big boy, how can I help you? 😀💪",
+      text: "Hola chico grande, en qué puedo ayudarte hoy? 😀💪",
+      like: false,
     },
   ]);
   const [isMessageUpdating, setIsMessageUpdating] = useState<boolean>(false);
@@ -34,8 +37,18 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
     setMessages((prev) => [...prev, message]);
   };
 
+  const likeMessage = (message: Message) => {
+    setMessages((prev) =>
+      prev.map((prevMessage) =>
+        prevMessage === message
+          ? { ...message, like: !message.like }
+          : prevMessage
+      )
+    );
+  };
+
   const removeMessage = (id: string) => {
-    setMessages((prev) => prev.filter((message) => message.id !== id));
+    setMessages((prev) => prev.filter((message) => message._id !== id));
   };
 
   const updateMessage = (
@@ -44,7 +57,7 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
   ) => {
     setMessages((prev) =>
       prev.map((message) => {
-        if (message.id === id) {
+        if (message._id === id) {
           return { ...message, text: updateFn(message.text) };
         }
         return message;
@@ -58,6 +71,7 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
         messages,
         isMessageUpdating,
         addMessage,
+        likeMessage,
         removeMessage,
         updateMessage,
         setIsMessageUpdating,

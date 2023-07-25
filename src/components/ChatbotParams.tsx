@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { Switch } from "./ui/switch";
 import { Label } from "@/components/ui/label";
 import { UserProtectedContext } from "@/context/user-protected";
+import { Badge } from "./ui/badge";
 
 const ChatbotParams = () => {
   const { params, setParams } = useContext(UserProtectedContext);
@@ -29,6 +30,7 @@ const ChatbotParams = () => {
       <Label htmlFor="mood" className="text-xs">
         Rude
       </Label>
+      <Badge variant="secondary">BETA</Badge>
     </div>
   );
 };

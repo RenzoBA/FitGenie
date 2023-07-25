@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
 import {
   Bug,
@@ -64,7 +64,7 @@ const SignButton: FC = () => {
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <p>&ldquo;{session.user?.name}&rdquo;</p>
+                  <p>{session.user?.name}</p>
                   <p className="text-xs">{session.user?.email}</p>
                 </div>
               </div>
@@ -78,7 +78,7 @@ const SignButton: FC = () => {
                   pathname: "/user",
                   query: { id: encrypt(session.user?.email!) },
                 }}
-                className="flex flew-row gap-1 w-full"
+                className="flex flew-row items-center gap-1 w-full"
               >
                 <User size={18} />
                 <span>Profile</span>
@@ -90,14 +90,14 @@ const SignButton: FC = () => {
                   pathname: "/chatbot",
                   query: { id: encrypt(session.user?.email!) },
                 }}
-                className="flex flew-row gap-1 w-full"
+                className="flex flew-row items-center gap-1 w-full"
               >
                 <MessagesSquare size={18} />
                 <span>Chat</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem disabled>
-              <Link href="" className="flex flew-row gap-1 w-full">
+              <Link href="" className="flex flew-row items-center gap-1 w-full">
                 <CreditCard size={18} />
                 <span>Billing</span>
               </Link>
@@ -105,7 +105,10 @@ const SignButton: FC = () => {
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <Link href="/report" className="flex flew-row gap-1 w-full">
+            <Link
+              href="/report"
+              className="flex flew-row items-center gap-1 w-full"
+            >
               <Bug size={18} />
               <span>Report</span>
             </Link>
@@ -113,19 +116,28 @@ const SignButton: FC = () => {
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem>
-              <Link href="/about" className="flex flew-row gap-1 w-full">
+              <Link
+                href="/about"
+                className="flex flew-row items-center gap-1 w-full"
+              >
                 <Info size={18} />
                 <span>About</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href="/privacy" className="flex flew-row gap-1 w-full">
+              <Link
+                href="/privacy"
+                className="flex flew-row items-center gap-1 w-full"
+              >
                 <Lock size={18} />
                 <span>Privacy</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href="/terms" className="flex flew-row gap-1 w-full">
+              <Link
+                href="/terms"
+                className="flex flew-row items-center gap-1 w-full"
+              >
                 <Scroll size={18} />
                 <span>Terms</span>
               </Link>
@@ -135,13 +147,15 @@ const SignButton: FC = () => {
           <DropdownMenuSeparator />
 
           <DropdownMenuItem>
-            <button
+            <Button
               onClick={() => signOut()}
-              className="flex flew-row gap-1 w-full"
+              className="flex flew-row items-center gap-1 w-full p-0 h-fit"
+              variant="ghost"
+              type="button"
             >
               <LogOut size={18} />
               <span>Log out</span>
-            </button>
+            </Button>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

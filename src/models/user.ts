@@ -13,6 +13,7 @@ const UserSchema = new Schema({
   level: String,
   goal: String,
   motivation: String,
+  messagesLiked: [{ _id: String, isUserMessage: Boolean, text: String }],
 });
 
 export const User = models.User || model("User", UserSchema);

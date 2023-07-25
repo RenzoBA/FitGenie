@@ -44,11 +44,12 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
     onSuccess: async (stream) => {
       if (!stream) throw new Error("No stream found");
 
-      const id = crypto.randomUUID();
+      const _id = crypto.randomUUID();
       const responseMessage: Message = {
-        id,
+        _id,
         isUserMessage: false,
         text: "",
+        like: false,
       };
 
       addMessage(responseMessage);
@@ -63,7 +64,7 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
         const { value, done: doneReading } = await reader.read();
         done = doneReading;
         const chunkValue = decoder.decode(value);
-        updateMessage(id, (prev) => prev + chunkValue);
+        updateMessage(_id, (prev) => prev + chunkValue);
       }
 
       setInput("");
@@ -75,7 +76,7 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
     },
     onError: (_, message) => {
       alert("Something went wrong. Please try again.");
-      removeMessage(message.id);
+      removeMessage(message._id);
       textareaRef.current?.focus();
     },
   });
@@ -92,9 +93,10 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
               e.preventDefault();
 
               const message: Message = {
-                id: crypto.randomUUID(),
+                _id: crypto.randomUUID(),
                 isUserMessage: true,
                 text: input,
+                like: false,
               };
               sendMessage(message);
             }
@@ -117,9 +119,10 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
                 className="px-0"
                 onClick={() => {
                   const message: Message = {
-                    id: crypto.randomUUID(),
+                    _id: crypto.randomUUID(),
                     isUserMessage: true,
                     text: input,
+                    like: false,
                   };
                   sendMessage(message);
                 }}
