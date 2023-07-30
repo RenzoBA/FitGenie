@@ -12,8 +12,8 @@ const MessageLikedSkeleton: FC = () => {
         <div className="flex flex-row gap-2 items-center">
           <div className="bg-muted rounded-full h-10 w-10 animate-pulse" />
           <div className="space-y-2">
-            <div className="bg-muted h-4 w-48 rounded-full animate-pulse" />
-            <div className="bg-muted h-4 w-48 rounded-full animate-pulse" />
+            <div className="bg-muted h-4 w-48 rounded-md animate-pulse" />
+            <div className="bg-muted h-4 w-48 rounded-md animate-pulse" />
           </div>
         </div>
         <DropdownMenu>
@@ -23,10 +23,10 @@ const MessageLikedSkeleton: FC = () => {
         </DropdownMenu>
       </div>
       <div className="flex flex-col gap-2 justify-start h-full text-left">
-        <div className="bg-muted h-4 w-full rounded-full animate-pulse" />
-        <div className="bg-muted h-4 w-full rounded-full animate-pulse" />
-        <div className="bg-muted h-4 w-full rounded-full animate-pulse" />
-        <div className="bg-muted h-4 w-full rounded-full animate-pulse" />
+        <div className="bg-muted h-4 w-full rounded-md animate-pulse" />
+        <div className="bg-muted h-4 w-full rounded-md animate-pulse" />
+        <div className="bg-muted h-4 w-full rounded-md animate-pulse" />
+        <div className="bg-muted h-4 w-full rounded-md animate-pulse" />
       </div>
     </div>
   );

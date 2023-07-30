@@ -45,7 +45,8 @@ const MessagesLiked = () => {
 
   if (userLoading) {
     return (
-      <div className="flex gap-5 pb-2">
+      <div className="flex gap-5 pb-2 overflow-x-auto scrollbar-thumb-border scrollbar-thumb-rounded scrollbar-track-transparent scrollbar scrollbar-w-2 scrolling-touch scroll-smooth">
+        <MessageLikedSkeleton />
         <MessageLikedSkeleton />
         <MessageLikedSkeleton />
         <MessageLikedSkeleton />
