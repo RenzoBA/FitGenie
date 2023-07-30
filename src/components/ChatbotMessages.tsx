@@ -10,6 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { Message } from "@/lib/validators/message";
 import { UserProtectedContext } from "@/context/user-protected";
+import { useToast } from "./ui/use-toast";
 
 interface ChatbotMessagesProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -19,6 +20,8 @@ const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, ...props }) => {
   const { refetch } = useContext(UserProtectedContext);
   const inverseMessages = [...messages].reverse();
 
+  const { toast } = useToast();
+
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
@@ -26,6 +29,10 @@ const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, ...props }) => {
     mutationKey: ["likeMessage"],
     mutationFn: async (_message: Message) => {
       likeMessage(_message);
+      toast({
+        title: `${_message.like ? "Removed" : "Saved"} successfully`,
+        description: `The message was ${_message.like ? "removed" : "saved"}`,
+      });
       const res = await fetch(`/api/user/messages?id=${id}`, {
         method: "PUT",
         headers: {
@@ -38,8 +45,6 @@ const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, ...props }) => {
       return res.body;
     },
   });
-
-  console.log("messages", inverseMessages);
 
   const handleMessageShare = () => {};
 

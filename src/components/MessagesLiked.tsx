@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import { useContext } from "react";
 import { UserProtectedContext } from "@/context/user-protected";
 import { MessagesContext } from "@/context/messages";
+import { useToast } from "./ui/use-toast";
 
 const MessagesLiked = () => {
   const searchParams = useSearchParams();
@@ -16,12 +17,18 @@ const MessagesLiked = () => {
   const { data, refetch } = useContext(UserProtectedContext);
   const { likeMessage } = useContext(MessagesContext);
 
+  const { toast } = useToast();
+
   const { data: session, status } = useSession();
 
   const { mutate: handlerUserMessagesLike } = useMutation({
     mutationKey: ["likeMessage"],
     mutationFn: async (_message: Message) => {
       likeMessage(_message);
+      toast({
+        title: "Removed successfully",
+        description: "The message was removed",
+      });
       const res = await fetch(`/api/user/messages?id=${id}`, {
         method: "PUT",
         headers: {
