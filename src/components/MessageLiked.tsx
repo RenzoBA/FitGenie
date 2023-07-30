@@ -25,7 +25,7 @@ const MessageLiked: FC<MessageLikedProps> = ({
   message,
   handlerUserMessagesLike,
 }) => {
-  const limit = 150;
+  const limit = 180;
 
   return (
     <div className="flex flex-none flex-col gap-4 border border-input rounded-lg p-5 w-80 h-72">
@@ -73,7 +73,7 @@ const MessageLiked: FC<MessageLikedProps> = ({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="flex flex-col gap-2 justify-center h-full text-left">
+      <div className="flex flex-col gap-2 justify-start h-full text-left">
         <p>
           &ldquo;
           {message.text.length > limit

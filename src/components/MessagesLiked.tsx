@@ -10,16 +10,17 @@ import { useContext } from "react";
 import { UserProtectedContext } from "@/context/user-protected";
 import { MessagesContext } from "@/context/messages";
 import { useToast } from "./ui/use-toast";
+import MessageLikedSkeleton from "./skeleton/MessageLikedSkeleton";
 
 const MessagesLiked = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
-  const { data, refetch } = useContext(UserProtectedContext);
+  const { data, refetch, userLoading } = useContext(UserProtectedContext);
   const { likeMessage } = useContext(MessagesContext);
 
   const { toast } = useToast();
 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   const { mutate: handlerUserMessagesLike } = useMutation({
     mutationKey: ["likeMessage"],
@@ -42,8 +43,14 @@ const MessagesLiked = () => {
     },
   });
 
-  if (status === "loading") {
-    return <Loader2 className="animate-spin" />;
+  if (userLoading) {
+    return (
+      <div className="flex gap-5 pb-2">
+        <MessageLikedSkeleton />
+        <MessageLikedSkeleton />
+        <MessageLikedSkeleton />
+      </div>
+    );
   }
 
   return (
