@@ -26,10 +26,6 @@ const MessagesLiked = () => {
     mutationKey: ["likeMessage"],
     mutationFn: async (_message: Message) => {
       likeMessage(_message);
-      toast({
-        title: "Removed successfully",
-        description: "The message was removed",
-      });
       const res = await fetch(`/api/user/messages?id=${id}`, {
         method: "PUT",
         headers: {
@@ -39,6 +35,10 @@ const MessagesLiked = () => {
         body: JSON.stringify({ _message }),
       });
       refetch();
+      toast({
+        title: "Removed successfully",
+        description: "The message was removed",
+      });
       return res.body;
     },
   });

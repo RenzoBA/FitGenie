@@ -29,10 +29,6 @@ const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, ...props }) => {
     mutationKey: ["likeMessage"],
     mutationFn: async (_message: Message) => {
       likeMessage(_message);
-      toast({
-        title: `${_message.like ? "Removed" : "Saved"} successfully`,
-        description: `The message was ${_message.like ? "removed" : "saved"}`,
-      });
       const res = await fetch(`/api/user/messages?id=${id}`, {
         method: "PUT",
         headers: {
@@ -42,6 +38,10 @@ const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, ...props }) => {
         body: JSON.stringify({ _message }),
       });
       refetch();
+      toast({
+        title: `${_message.like ? "Removed" : "Saved"} successfully`,
+        description: `The message was ${_message.like ? "removed" : "saved"}`,
+      });
       return res.body;
     },
   });

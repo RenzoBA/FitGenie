@@ -40,6 +40,18 @@ const SignButton: FC = () => {
     );
   }
 
+  const closeDropdownMenu = () => {
+    const event = new KeyboardEvent("keydown", {
+      key: "Escape",
+      code: "Escape",
+      keyCode: 27,
+      bubbles: true,
+      cancelable: true,
+    });
+
+    document.dispatchEvent(event);
+  };
+
   if (status === "authenticated") {
     return (
       <DropdownMenu>
@@ -74,6 +86,7 @@ const SignButton: FC = () => {
           <DropdownMenuGroup>
             <DropdownMenuItem>
               <Link
+                onClick={closeDropdownMenu}
                 href={{
                   pathname: "/user",
                   query: { id: encrypt(session.user?.email!) },
@@ -86,6 +99,7 @@ const SignButton: FC = () => {
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Link
+                onClick={closeDropdownMenu}
                 href={{
                   pathname: "/chatbot",
                   query: { id: encrypt(session.user?.email!) },
@@ -106,6 +120,7 @@ const SignButton: FC = () => {
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link
+              onClick={closeDropdownMenu}
               href="/report"
               className="flex flew-row items-center gap-1 w-full"
             >
@@ -117,6 +132,7 @@ const SignButton: FC = () => {
           <DropdownMenuGroup>
             <DropdownMenuItem>
               <Link
+                onClick={closeDropdownMenu}
                 href="/about"
                 className="flex flew-row items-center gap-1 w-full"
               >
@@ -126,6 +142,7 @@ const SignButton: FC = () => {
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Link
+                onClick={closeDropdownMenu}
                 href="/privacy"
                 className="flex flew-row items-center gap-1 w-full"
               >
@@ -135,6 +152,7 @@ const SignButton: FC = () => {
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Link
+                onClick={closeDropdownMenu}
                 href="/terms"
                 className="flex flew-row items-center gap-1 w-full"
               >
