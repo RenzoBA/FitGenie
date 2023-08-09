@@ -18,8 +18,8 @@ export const UserProtectedContext = createContext<{
   data: {
     user: User | null;
   };
-  userLoading: boolean;
-  refetch: (options?: RefetchOptions) => Promise<any>;
+  dataLoading: boolean;
+  refetchData: (options?: RefetchOptions) => Promise<any>;
   params: {
     mood: "friendly" | "rude";
   };
@@ -28,8 +28,8 @@ export const UserProtectedContext = createContext<{
   data: {
     user: null,
   },
-  userLoading: false,
-  refetch: async () => {},
+  dataLoading: false,
+  refetchData: async () => {},
   params: {
     mood: "friendly",
   },
@@ -46,8 +46,8 @@ export const UserProtectedProvider = ({
 
   const {
     data,
-    isLoading: userLoading,
-    refetch,
+    isLoading: dataLoading,
+    refetch: refetchData,
   } = useQuery({
     queryKey: ["user-detail"],
     queryFn: async () => {
@@ -63,8 +63,8 @@ export const UserProtectedProvider = ({
     <UserProtectedContext.Provider
       value={{
         data,
-        userLoading,
-        refetch,
+        dataLoading,
+        refetchData,
         params,
         setParams,
       }}

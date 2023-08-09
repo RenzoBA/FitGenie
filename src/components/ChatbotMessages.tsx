@@ -17,7 +17,7 @@ interface ChatbotMessagesProps extends HTMLAttributes<HTMLDivElement> {}
 const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, ...props }) => {
   const { messages, likeMessage, isMessageUpdating } =
     useContext(MessagesContext);
-  const { refetch } = useContext(UserProtectedContext);
+  const { refetchData } = useContext(UserProtectedContext);
   const inverseMessages = [...messages].reverse();
 
   const { toast } = useToast();
@@ -37,7 +37,7 @@ const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, ...props }) => {
         },
         body: JSON.stringify({ _message }),
       });
-      refetch();
+      refetchData();
       toast({
         title: `${_message.like ? "Removed" : "Saved"} successfully`,
         description: `The message was ${_message.like ? "removed" : "saved"}`,

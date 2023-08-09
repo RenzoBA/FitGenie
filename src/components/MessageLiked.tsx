@@ -1,7 +1,6 @@
 import { Message } from "@/lib/validators/message";
 import { FC } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Session } from "next-auth";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -13,40 +12,48 @@ import {
   DropdownMenuItem,
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
+import { User } from "@/types/user";
 
 interface MessageLikedProps {
-  session: Session;
+  user: User;
   message: Message;
   handlerUserMessagesLike: (_message: Message) => void;
 }
 
 const MessageLiked: FC<MessageLikedProps> = ({
-  session,
+  user,
   message,
   handlerUserMessagesLike,
 }) => {
   const limit = 180;
 
   return (
-    <div className="flex flex-none flex-col gap-4 border border-input rounded-lg p-5 w-80 h-72">
+    <div className="flex flex-none flex-col gap-4 border border-input rounded-lg p-5 w-80 h-72 text-primary">
       <div className="flex flex-row items-start justify-between">
         <div className="flex flex-row gap-2 items-center">
           <Avatar>
-            <AvatarImage src={session.user?.image!} alt="" />
+            <AvatarImage
+              src={
+                typeof user.image! === "string"
+                  ? user.image
+                  : URL.createObjectURL(user.image!)
+              }
+              alt="user-picture"
+            />
             <AvatarFallback className="uppercase">
-              {session.user?.name?.split(" ")[0][0]}
+              {user.name.split(" ")[0][0]}
             </AvatarFallback>
           </Avatar>
           <div>
-            <p>{session.user?.name}</p>
-            <p className="text-xs">{session.user?.email}</p>
+            <p>{user.name}</p>
+            <p className="text-xs text-muted-foreground">{user.email}</p>
           </div>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="cursor-pointer">
             <MoreVertical />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="absolute -right-4 top-2 w-40">
+          <DropdownMenuContent className="absolute -right-2 top-1 w-40">
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Button
@@ -81,7 +88,7 @@ const MessageLiked: FC<MessageLikedProps> = ({
             : message.text}
           &rdquo;
         </p>
-        <p className="text-xs text-right">-FitGenie-</p>
+        <p className="text-xs text-right text-muted-foreground">-FitGenie-</p>
       </div>
     </div>
   );

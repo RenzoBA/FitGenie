@@ -15,12 +15,10 @@ import MessageLikedSkeleton from "./skeleton/MessageLikedSkeleton";
 const MessagesLiked = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
-  const { data, refetch, userLoading } = useContext(UserProtectedContext);
+  const { data, refetchData, dataLoading } = useContext(UserProtectedContext);
   const { likeMessage } = useContext(MessagesContext);
 
   const { toast } = useToast();
-
-  const { data: session } = useSession();
 
   const { mutate: handlerUserMessagesLike } = useMutation({
     mutationKey: ["likeMessage"],
@@ -34,7 +32,7 @@ const MessagesLiked = () => {
         },
         body: JSON.stringify({ _message }),
       });
-      refetch();
+      refetchData();
       toast({
         title: "Removed successfully",
         description: "The message was removed",
@@ -43,7 +41,7 @@ const MessagesLiked = () => {
     },
   });
 
-  if (userLoading) {
+  if (dataLoading) {
     return (
       <div className="flex gap-5 pb-2 overflow-x-auto scrollbar-thumb-border scrollbar-thumb-rounded scrollbar-track-transparent scrollbar scrollbar-w-2 scrolling-touch scroll-smooth">
         <MessageLikedSkeleton />
@@ -60,7 +58,7 @@ const MessagesLiked = () => {
         {data?.user?.messagesLiked!.map((message: Message) => (
           <MessageLiked
             key={message._id}
-            session={session!}
+            user={data?.user!}
             message={message}
             handlerUserMessagesLike={handlerUserMessagesLike}
           />

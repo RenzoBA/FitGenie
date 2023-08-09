@@ -1,5 +1,4 @@
 import { decrypt } from "@/helpers/functions/encrypt";
-import { removeBlankFields } from "@/helpers/functions/filter";
 import connectDB from "@/lib/mongoose";
 import { User } from "@/models/user";
 import { NextResponse } from "next/server";
@@ -25,8 +24,8 @@ export const PUT = async (req: Request) => {
   try {
     await connectDB();
 
-    const body = await req.json();
-    const infoToUpdate = removeBlankFields(body);
+    const formData = await req.formData();
+    const infoToUpdate = Object.fromEntries(formData);
 
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
@@ -37,7 +36,7 @@ export const PUT = async (req: Request) => {
       new: true,
     });
 
-    return NextResponse.json({ userUpdated }, { status: 202 });
+    return NextResponse.json(userUpdated, { status: 202 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 404 });
   }

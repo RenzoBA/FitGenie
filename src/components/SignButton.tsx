@@ -63,7 +63,7 @@ const SignButton: FC = () => {
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="absolute -right-4 top-2">
+        <DropdownMenuContent className="absolute -right-2 top-2">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>

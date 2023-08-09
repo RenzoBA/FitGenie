@@ -29,6 +29,7 @@
     "@upstash/redis": "^1.20.6",
     "autoprefixer": "10.4.14",
     "class-variance-authority": "^0.6.0",
+    "cloudinary": "^1.40.0",
     "clsx": "^1.2.1",
     "crypto-js": "^4.1.1",
     "eslint": "8.40.0",
@@ -53,6 +54,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@types/formidable": "^3.4.0",
     "@types/nodemailer": "^6.4.8"
   }
 }
