@@ -52,10 +52,18 @@ const MessagesLiked = () => {
     );
   }
 
+  if (data?.user?.messagesLiked!.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-72 w-full">
+        <p className="text-muted-foreground">No messages</p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="flex gap-5 pb-2 overflow-x-auto scrollbar-thumb-border scrollbar-thumb-rounded scrollbar-track-transparent scrollbar scrollbar-w-2 scrolling-touch scroll-smooth">
-        {data?.user?.messagesLiked!.map((message: Message) => (
+        {data.user?.messagesLiked!.map((message: Message) => (
           <MessageLiked
             key={message._id}
             user={data?.user!}
