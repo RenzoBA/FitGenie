@@ -26,19 +26,18 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { encrypt } from "@/helpers/functions/encrypt";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./ui/sheet";
 
 const SignButton: FC = () => {
   const { data: session, status } = useSession();
-
-  if (status === "loading") {
-    return (
-      <Avatar>
-        <AvatarFallback className="uppercase">
-          <Loader2 className="animate-spin" />
-        </AvatarFallback>
-      </Avatar>
-    );
-  }
 
   const closeDropdownMenu = () => {
     const event = new KeyboardEvent("keydown", {
@@ -52,143 +51,136 @@ const SignButton: FC = () => {
     document.dispatchEvent(event);
   };
 
-  if (status === "authenticated") {
+  if (status === "loading") {
     return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild className="cursor-pointer">
-          <Avatar>
-            <AvatarImage src={session.user?.image!} alt="" />
-            <AvatarFallback className="uppercase">
-              {session.user?.name?.split(" ")[0][0]}
-            </AvatarFallback>
-          </Avatar>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="absolute -right-2 top-2">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <div className="flex flex-row gap-2 items-center">
-                <Avatar>
-                  <AvatarImage src={session.user?.image!} alt="" />
-                  <AvatarFallback className="uppercase">
-                    {session.user?.name?.split(" ")[0][0]}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <p>{session.user?.name}</p>
-                  <p className="text-xs">{session.user?.email}</p>
-                </div>
-              </div>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <Link
-                onClick={closeDropdownMenu}
-                href={{
-                  pathname: "/user",
-                  query: { id: encrypt(session.user?.email!) },
-                }}
-                className="flex flew-row items-center gap-1 w-full"
-              >
-                <User size={18} />
-                <span>Profile</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link
-                onClick={closeDropdownMenu}
-                href={{
-                  pathname: "/chatbot",
-                  query: { id: encrypt(session.user?.email!) },
-                }}
-                className="flex flew-row items-center gap-1 w-full"
-              >
-                <MessagesSquare size={18} />
-                <span>Chat</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem disabled>
-              <Link href="" className="flex flew-row items-center gap-1 w-full">
-                <CreditCard size={18} />
-                <span>Billing</span>
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Link
-              onClick={closeDropdownMenu}
-              href="/report"
-              className="flex flew-row items-center gap-1 w-full"
-            >
-              <Bug size={18} />
-              <span>Report</span>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <Link
-                onClick={closeDropdownMenu}
-                href="/about"
-                className="flex flew-row items-center gap-1 w-full"
-              >
-                <Info size={18} />
-                <span>About</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link
-                onClick={closeDropdownMenu}
-                href="/privacy"
-                className="flex flew-row items-center gap-1 w-full"
-              >
-                <Lock size={18} />
-                <span>Privacy</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link
-                onClick={closeDropdownMenu}
-                href="/terms"
-                className="flex flew-row items-center gap-1 w-full"
-              >
-                <Scroll size={18} />
-                <span>Terms</span>
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
+      <Avatar>
+        <AvatarFallback className="uppercase">
+          <Loader2 className="animate-spin" />
+        </AvatarFallback>
+      </Avatar>
+    );
+  }
 
-          <DropdownMenuSeparator />
+  if (status === "unauthenticated") {
+    return (
+      <div className="flex gap-2">
+        <Link
+          href="/auth/signup"
+          className={buttonVariants({ variant: "outline" })}
+        >
+          Sign up
+        </Link>
+      </div>
+    );
+  }
 
-          <DropdownMenuItem>
+  return (
+    <Sheet>
+      <SheetTrigger asChild className="cursor-pointer">
+        <Avatar>
+          <AvatarImage src={session!.user?.image!} alt="" />
+          <AvatarFallback className="uppercase">
+            {session!.user?.name?.split(" ")[0][0]}
+          </AvatarFallback>
+        </Avatar>
+      </SheetTrigger>
+      <SheetContent className="flex flex-col justify-start gap-5">
+        <SheetHeader className="space-y-4">
+          <SheetTitle>My Account</SheetTitle>
+          <div className="flex flex-col sm:flex-row gap-2 justify-start items-center">
+            <Avatar>
+              <AvatarImage src={session!.user?.image!} alt="" />
+              <AvatarFallback className="uppercase">
+                {session!.user?.name?.split(" ")[0][0]}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <p>{session!.user?.name}</p>
+              <p className="text-xs text-muted-foreground">
+                {session!.user?.email}
+              </p>
+            </div>
+          </div>
+        </SheetHeader>
+        <div className="flex flex-col items-center sm:items-start gap-2">
+          <Link
+            onClick={closeDropdownMenu}
+            href={{
+              pathname: "/user",
+              query: { id: encrypt(session!.user?.email!) },
+            }}
+            className="flex flew-row items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+          >
+            <User size={18} />
+            <span>Profile</span>
+          </Link>
+          <Link
+            onClick={closeDropdownMenu}
+            href={{
+              pathname: "/chatbot",
+              query: { id: encrypt(session!.user?.email!) },
+            }}
+            className="flex flew-row items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+          >
+            <MessagesSquare size={18} />
+            <span>Chat</span>
+          </Link>
+          <Link
+            href=""
+            className="flex flew-row items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+          >
+            <CreditCard size={18} />
+            <span>Billing</span>
+          </Link>
+          <Link
+            onClick={closeDropdownMenu}
+            href="/report"
+            className="flex flew-row items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+          >
+            <Bug size={18} />
+            <span>Report</span>
+          </Link>
+          <Link
+            onClick={closeDropdownMenu}
+            href="/about"
+            className="flex flew-row items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+          >
+            <Info size={18} />
+            <span>About</span>
+          </Link>
+          <Link
+            onClick={closeDropdownMenu}
+            href="/privacy"
+            className="flex flew-row items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+          >
+            <Lock size={18} />
+            <span>Privacy</span>
+          </Link>
+          <Link
+            onClick={closeDropdownMenu}
+            href="/terms"
+            className="flex flew-row items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+          >
+            <Scroll size={18} />
+            <span>Terms</span>
+          </Link>
+        </div>
+
+        <SheetFooter className="mt-auto">
+          <SheetClose asChild>
             <Button
               onClick={() => signOut()}
-              className="flex flew-row items-center gap-1 w-full p-0 h-fit"
-              variant="ghost"
+              className="flex flew-row items-center gap-2 w-full"
+              variant="default"
               type="button"
             >
               <LogOut size={18} />
               <span>Log out</span>
             </Button>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    );
-  }
-
-  return (
-    <div className="flex gap-2">
-      <Link
-        href="/auth/signup"
-        className={buttonVariants({ variant: "outline" })}
-      >
-        Sign up
-      </Link>
-    </div>
+          </SheetClose>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
   );
 };
 

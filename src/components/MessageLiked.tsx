@@ -38,7 +38,7 @@ const MessageLiked: FC<MessageLikedProps> = ({
                 {user.name.split(" ")[0][0]}
               </AvatarFallback>
             </Avatar>
-            <div>
+            <div className="text-left">
               <p>{user.name}</p>
               <p className="text-xs text-muted-foreground">{user.email}</p>
             </div>
@@ -57,7 +57,7 @@ const MessageLiked: FC<MessageLikedProps> = ({
           </div>
         </div>
       </DialogTrigger>
-      <DialogContent className="flex flex-none flex-col gap-7 p-8 text-primary md:max-w-[700px]">
+      <DialogContent className="flex flex-none flex-col gap-7 p-8 text-primary w-11/12 rounded-lg md:max-w-[700px]">
         <DialogHeader>
           <div className="flex flex-row gap-2 items-center">
             <Avatar>
@@ -73,7 +73,7 @@ const MessageLiked: FC<MessageLikedProps> = ({
                 {user.name.split(" ")[0][0]}
               </AvatarFallback>
             </Avatar>
-            <div>
+            <div className="text-left">
               <p>{user.name}</p>
               <p className="text-xs text-muted-foreground">{user.email}</p>
             </div>
@@ -83,7 +83,7 @@ const MessageLiked: FC<MessageLikedProps> = ({
           <p>&ldquo;{message.text}&rdquo;</p>
           <p className="text-xs text-right text-muted-foreground">-FitGenie-</p>
         </div>
-        <DialogFooter>
+        <DialogFooter className="flex flex-row gap-2">
           <Button
             disabled
             className="flex flew-row items-center gap-2 w-full"
