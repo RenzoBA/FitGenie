@@ -6,7 +6,7 @@ const page: NextPage = () => {
     <div className="h-screen flex justify-center items-center px-8">
       <Alert
         label="FitGenie"
-        description="Please check your email to sign-up"
+        description="Sign in to your email to verify your account"
       />
     </div>
   );

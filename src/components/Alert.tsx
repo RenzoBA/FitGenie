@@ -20,7 +20,7 @@ const Alert: FC<AlertProps> = ({ label, description }) => {
         </Avatar>
         <p className="font-semibold text-5xl">{label}</p>
       </div>
-      <p className="text-muted-foreground animate-pulse">{description}</p>
+      <p className="text-muted-foreground">{description}</p>
     </div>
   );
 };

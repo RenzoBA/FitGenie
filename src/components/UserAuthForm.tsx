@@ -20,7 +20,7 @@ const UserAuthForm = ({ className, ...props }: UserAuthFormProps) => {
 
     setTimeout(() => {
       setIsLoading(false);
-      signIn("email", { email, callbackUrl: "/user" });
+      signIn("email", { email, callbackUrl: "/" });
     }, 1500);
   }
 
@@ -62,7 +62,7 @@ const UserAuthForm = ({ className, ...props }: UserAuthFormProps) => {
         variant="outline"
         type="button"
         disabled={isLoading}
-        onClick={() => signIn("google")}
+        onClick={() => signIn("google", { callbackUrl: "/" })}
       >
         {isLoading ? (
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -75,7 +75,7 @@ const UserAuthForm = ({ className, ...props }: UserAuthFormProps) => {
         variant="outline"
         type="button"
         disabled={isLoading}
-        onClick={() => signIn("github")}
+        onClick={() => signIn("github", { callbackUrl: "/" })}
       >
         {isLoading ? (
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />

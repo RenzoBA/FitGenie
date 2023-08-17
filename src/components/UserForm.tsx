@@ -125,6 +125,7 @@ const UserForm = () => {
       }));
     }
   };
+  console.log(user);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -147,9 +148,11 @@ const UserForm = () => {
           <Avatar className="h-60 w-60 border border-border">
             <AvatarImage
               src={
-                typeof user?.image! === "string"
+                !user?.image
+                  ? ""
+                  : typeof user?.image === "string"
                   ? user?.image
-                  : URL.createObjectURL(user?.image!)
+                  : URL.createObjectURL(user?.image)
               }
               alt="user-picture"
             />
