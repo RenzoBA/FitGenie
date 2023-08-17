@@ -4,7 +4,7 @@ const Logo = () => {
   return (
     <Link
       href="/"
-      className="relative z-20 flex items-center text-lg font-bold"
+      className="relative z-20 flex items-center text-xl font-bold"
     >
       FitGenie
     </Link>

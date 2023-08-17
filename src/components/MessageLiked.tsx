@@ -39,7 +39,7 @@ const MessageLiked: FC<MessageLikedProps> = ({
               </AvatarFallback>
             </Avatar>
             <div className="text-left">
-              <p>{user.name}</p>
+              <p className="text-lg">{user.name}</p>
               <p className="text-xs text-muted-foreground">{user.email}</p>
             </div>
           </div>
@@ -74,7 +74,7 @@ const MessageLiked: FC<MessageLikedProps> = ({
               </AvatarFallback>
             </Avatar>
             <div className="text-left">
-              <p>{user.name}</p>
+              <p className="text-lg">{user.name}</p>
               <p className="text-xs text-muted-foreground">{user.email}</p>
             </div>
           </div>

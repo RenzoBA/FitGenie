@@ -1,16 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
 import {
   Bug,
   CreditCard,
@@ -35,6 +26,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
+import { Separator } from "./ui/separator";
 
 const SignButton: FC = () => {
   const { data: session, status } = useSession();
@@ -87,22 +79,23 @@ const SignButton: FC = () => {
       <SheetContent className="flex flex-col justify-start gap-5">
         <SheetHeader className="space-y-4">
           <SheetTitle>My Account</SheetTitle>
-          <div className="flex flex-col sm:flex-row gap-2 justify-start items-center">
+          <div className="flex flex-row gap-2 justify-start items-center">
             <Avatar>
               <AvatarImage src={session!.user?.image!} alt="" />
               <AvatarFallback className="uppercase">
                 {session!.user?.name?.split(" ")[0][0]}
               </AvatarFallback>
             </Avatar>
-            <div>
-              <p>{session!.user?.name}</p>
+            <div className="text-left">
+              <p className="text-lg">{session!.user?.name}</p>
               <p className="text-xs text-muted-foreground">
                 {session!.user?.email}
               </p>
             </div>
           </div>
         </SheetHeader>
-        <div className="flex flex-col items-center sm:items-start gap-2">
+        <Separator />
+        <div className="flex flex-col items-center sm:items-start gap-4 tracking-wider">
           <Link
             onClick={closeDropdownMenu}
             href={{

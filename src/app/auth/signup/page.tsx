@@ -7,7 +7,7 @@ import React from "react";
 const page: NextPage = () => {
   return (
     <div className="flex flex-row h-screen">
-      <div className="absolute -z-10 lg:relative w-full h-full flex-col bg-muted p-10 text-white border border-muted-foreground lg:flex lg:w-[55%] blur-sm opacity-10 lg:blur-none lg:opacity-100">
+      <div className="absolute -z-10 lg:relative w-full h-full flex-col bg-muted p-10 text-white border border-muted-foreground lg:flex lg:w-[55%] blur-sm opacity-20 lg:blur-none lg:opacity-100">
         <Image
           src="/assets/fg-coach.jpeg"
           alt="authentication"
