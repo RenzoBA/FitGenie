@@ -95,14 +95,14 @@ const SignButton: FC = () => {
           </div>
         </SheetHeader>
         <Separator />
-        <div className="flex flex-col items-center sm:items-start gap-4 tracking-wider">
+        <div className="flex flex-col items-center sm:items-start tracking-wider">
           <Link
             onClick={closeDropdownMenu}
             href={{
               pathname: "/user",
               query: { id: encrypt(session!.user?.email!) },
             }}
-            className="flex flew-row items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+            className="flex flew-row items-center gap-2 text-primary font-light w-full transition-all rounded-sm px-2 py-1.5 hover:bg-accent hover:text-accent-foreground"
           >
             <User size={18} />
             <span>Profile</span>
@@ -113,14 +113,14 @@ const SignButton: FC = () => {
               pathname: "/chatbot",
               query: { id: encrypt(session!.user?.email!) },
             }}
-            className="flex flew-row items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+            className="flex flew-row items-center gap-2 text-primary font-light w-full transition-all rounded-sm px-2 py-1.5 hover:bg-accent hover:text-accent-foreground"
           >
             <MessagesSquare size={18} />
-            <span>Chat</span>
+            <span>Chatbot</span>
           </Link>
           <Link
             href=""
-            className="flex flew-row items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+            className="flex flew-row items-center gap-2 text-primary font-light w-full transition-all rounded-sm px-2 py-1.5 hover:bg-accent hover:text-accent-foreground"
           >
             <CreditCard size={18} />
             <span>Billing</span>
@@ -128,7 +128,7 @@ const SignButton: FC = () => {
           <Link
             onClick={closeDropdownMenu}
             href="/report"
-            className="flex flew-row items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+            className="flex flew-row items-center gap-2 text-primary font-light w-full transition-all rounded-sm px-2 py-1.5 hover:bg-accent hover:text-accent-foreground"
           >
             <Bug size={18} />
             <span>Report</span>
@@ -136,7 +136,7 @@ const SignButton: FC = () => {
           <Link
             onClick={closeDropdownMenu}
             href="/about"
-            className="flex flew-row items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+            className="flex flew-row items-center gap-2 text-primary font-light w-full transition-all rounded-sm px-2 py-1.5 hover:bg-accent hover:text-accent-foreground"
           >
             <Info size={18} />
             <span>About</span>
@@ -144,7 +144,7 @@ const SignButton: FC = () => {
           <Link
             onClick={closeDropdownMenu}
             href="/privacy"
-            className="flex flew-row items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+            className="flex flew-row items-center gap-2 text-primary font-light w-full transition-all rounded-sm px-2 py-1.5 hover:bg-accent hover:text-accent-foreground"
           >
             <Lock size={18} />
             <span>Privacy</span>
@@ -152,7 +152,7 @@ const SignButton: FC = () => {
           <Link
             onClick={closeDropdownMenu}
             href="/terms"
-            className="flex flew-row items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+            className="flex flew-row items-center gap-2 text-primary font-light w-full transition-all rounded-sm px-2 py-1.5 hover:bg-accent hover:text-accent-foreground"
           >
             <Scroll size={18} />
             <span>Terms</span>
