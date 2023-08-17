@@ -1,4 +1,3 @@
-import ChatBot from "@/components/Chatbot";
 import HeroSection from "@/components/HeroSection";
 import { NextPage } from "next";
 
