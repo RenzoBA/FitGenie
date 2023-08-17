@@ -16,11 +16,6 @@ const MessageLikedSkeleton: FC = () => {
             <div className="bg-muted h-4 w-48 rounded-md animate-pulse" />
           </div>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild className="cursor-pointer">
-            <MoreVertical />
-          </DropdownMenuTrigger>
-        </DropdownMenu>
       </div>
       <div className="flex flex-col gap-2 justify-start h-full text-left">
         <div className="bg-muted h-4 w-full rounded-md animate-pulse" />
