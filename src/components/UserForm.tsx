@@ -125,7 +125,6 @@ const UserForm = () => {
       }));
     }
   };
-  console.log(user);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();

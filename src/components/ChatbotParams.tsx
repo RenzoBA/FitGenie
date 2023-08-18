@@ -17,7 +17,7 @@ const ChatbotParams = () => {
   };
 
   return (
-    <div className="flex items-center gap-2 px-4 py-2 border-b border-input">
+    <div className="flex items-center gap-2 px-4 py-2 border-y border-input">
       <Label htmlFor="mood" className="text-xs">
         Friendly
       </Label>
