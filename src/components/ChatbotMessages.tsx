@@ -52,7 +52,7 @@ const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, ...props }) => {
     <div
       {...props}
       className={cn(
-        "flex flex-col-reverse gap-3 overflow-auto scrollbar-thumb-border scrollbar-thumb-rounded scrollbar-track-transparent scrollbar scrollbar-w-2 scrolling-touch",
+        "flex flex-col-reverse gap-3 overflow-auto scrollbar-thumb-border scrollbar-thumb-rounded scrollbar-track-transparent scrollbar scrollbar-w-2",
         className
       )}
     >

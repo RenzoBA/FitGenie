@@ -1,16 +1,20 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import MessageLiked from "./MessageLiked";
 import { Message } from "@/lib/validators/message";
-import { useSession } from "next-auth/react";
 import { useContext } from "react";
 import { UserProtectedContext } from "@/context/user-protected";
 import { MessagesContext } from "@/context/messages";
 import { useToast } from "./ui/use-toast";
 import MessageLikedSkeleton from "./skeleton/MessageLikedSkeleton";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+import "swiper/css";
+import "swiper/css/pagination";
+
+import { Pagination } from "swiper/modules";
 
 const MessagesLiked = () => {
   const searchParams = useSearchParams();
@@ -43,12 +47,35 @@ const MessagesLiked = () => {
 
   if (dataLoading) {
     return (
-      <div className="flex gap-5 pb-2 overflow-x-auto scrollbar-thumb-border scrollbar-thumb-rounded scrollbar-track-transparent scrollbar scrollbar-w-2 scrolling-touch scroll-smooth">
-        <MessageLikedSkeleton />
-        <MessageLikedSkeleton />
-        <MessageLikedSkeleton />
-        <MessageLikedSkeleton />
-      </div>
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={20}
+        breakpoints={{
+          640: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesPerView: 3,
+          },
+          1428: {
+            slidesPerView: 4,
+          },
+        }}
+        modules={[Pagination]}
+      >
+        <SwiperSlide>
+          <MessageLikedSkeleton />
+        </SwiperSlide>
+        <SwiperSlide>
+          <MessageLikedSkeleton />
+        </SwiperSlide>
+        <SwiperSlide>
+          <MessageLikedSkeleton />
+        </SwiperSlide>
+        <SwiperSlide>
+          <MessageLikedSkeleton />
+        </SwiperSlide>
+      </Swiper>
     );
   }
 
@@ -62,16 +89,34 @@ const MessagesLiked = () => {
 
   return (
     <div>
-      <div className="flex gap-5 pb-2 overflow-x-auto scrollbar-thumb-border scrollbar-thumb-rounded scrollbar-track-transparent scrollbar scrollbar-w-2 scrolling-touch scroll-smooth">
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={20}
+        breakpoints={{
+          640: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesPerView: 3,
+          },
+          1428: {
+            slidesPerView: 4,
+          },
+        }}
+        grabCursor={true}
+        modules={[Pagination]}
+      >
         {data.user?.messagesLiked!.map((message: Message) => (
-          <MessageLiked
-            key={message._id}
-            user={data?.user!}
-            message={message}
-            handlerUserMessagesLike={handlerUserMessagesLike}
-          />
+          <SwiperSlide>
+            <MessageLiked
+              key={message._id}
+              user={data?.user!}
+              message={message}
+              handlerUserMessagesLike={handlerUserMessagesLike}
+            />
+          </SwiperSlide>
         ))}
-      </div>
+      </Swiper>
     </div>
   );
 };

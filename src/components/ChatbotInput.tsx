@@ -85,7 +85,6 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
     <div className={cn("border-t border-border", className)}>
       <div className="relative mt-4 flex-1 overflow-hidden rounded-lg border-none outline-none">
         <TextareaAutosize
-          autoFocus
           disabled={isLoading}
           ref={textareaRef}
           onKeyDown={(e) => {

@@ -8,8 +8,8 @@ const page = async () => {
         <h1 className="text-6xl font-black text-primary">CHATBOT</h1>
       </div>
       <div className="text-justify text-muted-foreground mt-3 leading-relaxed space-y-5 max-w-7xl w-full">
-        <h3 className="text-lg text-primary tracking-widest">
-          Messages saved:
+        <h3 className="font-light text-muted-foreground uppercase tracking-widest text-center">
+          Messages saved
         </h3>
         <MessagesLiked />
         <ChatBot />

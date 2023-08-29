@@ -18,41 +18,29 @@ const MessageLiked: FC<MessageLikedProps> = ({
   message,
   handlerUserMessagesLike,
 }) => {
-  const limit = 180;
+  const limit = 220;
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="flex flex-none flex-col gap-4 border border-input rounded-lg p-5 w-80 h-72 text-primary cursor-pointer">
+        <div className="flex flex-col gap-4 border border-input rounded-lg p-5 w-auto h-80 text-primary cursor-pointer">
           <div className="flex flex-row gap-2 items-center">
             <Avatar>
-              <AvatarImage
-                src={
-                  typeof user.image! === "string"
-                    ? user.image
-                    : URL.createObjectURL(user.image!)
-                }
-                alt="user-picture"
-              />
-              <AvatarFallback className="uppercase">
-                {user.name.split(" ")[0][0]}
-              </AvatarFallback>
+              <AvatarImage src="/assets/fg-coach.jpeg" alt="fg-coach" />
+              <AvatarFallback>FG</AvatarFallback>
             </Avatar>
             <div className="text-left">
-              <p className="text-lg">{user.name}</p>
-              <p className="text-xs text-muted-foreground">{user.email}</p>
+              <p className="text-lg">FitGenie</p>
+              <p className="text-xs text-muted-foreground">Coach</p>
             </div>
           </div>
-          <div className="flex flex-col gap-2 justify-start h-full text-left">
+          <div className="flex flex-col gap-2 justify-start text-left">
             <p>
               &ldquo;
               {message.text.length > limit
                 ? `${message.text.slice(0, limit)}...`
                 : message.text}
               &rdquo;
-            </p>
-            <p className="text-xs text-right text-muted-foreground">
-              -FitGenie-
             </p>
           </div>
         </div>
@@ -61,27 +49,17 @@ const MessageLiked: FC<MessageLikedProps> = ({
         <DialogHeader>
           <div className="flex flex-row gap-2 items-center">
             <Avatar>
-              <AvatarImage
-                src={
-                  typeof user.image! === "string"
-                    ? user.image
-                    : URL.createObjectURL(user.image!)
-                }
-                alt="user-picture"
-              />
-              <AvatarFallback className="uppercase">
-                {user.name.split(" ")[0][0]}
-              </AvatarFallback>
+              <AvatarImage src="/assets/fg-coach.jpeg" alt="fg-coach" />
+              <AvatarFallback>FG</AvatarFallback>
             </Avatar>
             <div className="text-left">
-              <p className="text-lg">{user.name}</p>
-              <p className="text-xs text-muted-foreground">{user.email}</p>
+              <p className="text-lg">FitGenie</p>
+              <p className="text-xs text-muted-foreground">Coach</p>
             </div>
           </div>
         </DialogHeader>
         <div className="flex flex-col gap-2 justify-start h-full text-left">
           <p>&ldquo;{message.text}&rdquo;</p>
-          <p className="text-xs text-right text-muted-foreground">-FitGenie-</p>
         </div>
         <DialogFooter className="flex flex-row gap-2">
           <Button
