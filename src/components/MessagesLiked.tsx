@@ -107,9 +107,8 @@ const MessagesLiked = () => {
         modules={[Pagination]}
       >
         {data.user?.messagesLiked!.map((message: Message) => (
-          <SwiperSlide>
+          <SwiperSlide key={message._id}>
             <MessageLiked
-              key={message._id}
               user={data?.user!}
               message={message}
               handlerUserMessagesLike={handlerUserMessagesLike}
