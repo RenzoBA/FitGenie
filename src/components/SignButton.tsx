@@ -57,7 +57,7 @@ const SignButton: FC = () => {
     return (
       <div className="flex gap-2">
         <Link
-          href="/auth/signup"
+          href="/auth/sign-up"
           className={buttonVariants({ variant: "outline" })}
         >
           Sign up
