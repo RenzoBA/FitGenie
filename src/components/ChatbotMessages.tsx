@@ -10,7 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { Message } from "@/lib/validators/message";
 import { UserProtectedContext } from "@/context/user-protected";
-import { useToast } from "./ui/use-toast";
+import { toast } from "@/app/hooks/use-toast";
 
 interface ChatbotMessagesProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -19,8 +19,6 @@ const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, ...props }) => {
     useContext(MessagesContext);
   const { refetchData } = useContext(UserProtectedContext);
   const inverseMessages = [...messages].reverse();
-
-  const { toast } = useToast();
 
   const searchParams = useSearchParams();
   const id = searchParams.get("id");

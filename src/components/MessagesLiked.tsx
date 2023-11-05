@@ -7,7 +7,6 @@ import { Message } from "@/lib/validators/message";
 import { useContext } from "react";
 import { UserProtectedContext } from "@/context/user-protected";
 import { MessagesContext } from "@/context/messages";
-import { useToast } from "./ui/use-toast";
 import MessageLikedSkeleton from "./skeleton/MessageLikedSkeleton";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -15,14 +14,13 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 import { Pagination } from "swiper/modules";
+import { toast } from "@/app/hooks/use-toast";
 
 const MessagesLiked = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const { data, refetchData, dataLoading } = useContext(UserProtectedContext);
   const { likeMessage } = useContext(MessagesContext);
-
-  const { toast } = useToast();
 
   const { mutate: handlerUserMessagesLike } = useMutation({
     mutationKey: ["likeMessage"],

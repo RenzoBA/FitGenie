@@ -13,7 +13,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
 import { User } from "@/types/user";
 import { useMutation } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
@@ -29,6 +28,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { uploadFile } from "@/helpers/functions/upload-file";
 import { useSession } from "next-auth/react";
+import { toast } from "@/app/hooks/use-toast";
 
 const UserForm = () => {
   const [user, setUser] = useState<User>({
@@ -57,8 +57,6 @@ const UserForm = () => {
 
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
-
-  const { toast } = useToast();
 
   const { mutate: updateUser, isLoading: updateUserLoading } = useMutation({
     mutationKey: ["userID"],
