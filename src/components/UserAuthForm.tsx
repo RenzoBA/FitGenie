@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Github, Chrome, Loader2 } from "lucide-react";
 import { signIn } from "next-auth/react";
+import { toast } from "@/app/hooks/use-toast";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -14,15 +15,51 @@ const UserAuthForm = ({ className, ...props }: UserAuthFormProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
 
-  async function handleSubmit(e: React.SyntheticEvent) {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-
-    setTimeout(() => {
+    try {
+      setIsLoading(true);
+      await signIn("email", { email, callbackUrl: "/" });
+    } catch (error) {
+      toast({
+        title: "Email loggin error",
+        description: "There was an error logging in with Email.",
+        variant: "destructive",
+      });
+    } finally {
       setIsLoading(false);
-      signIn("email", { email, callbackUrl: "/" });
-    }, 1500);
-  }
+    }
+  };
+
+  const loginWithGoogle = async () => {
+    try {
+      setIsLoading(true);
+      await signIn("google", { callbackUrl: "/" });
+    } catch (error) {
+      toast({
+        title: "Google loggin error",
+        description: "There was an error logging in with Google.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loginWithGithub = async () => {
+    try {
+      setIsLoading(true);
+      await signIn("github", { callbackUrl: "/" });
+    } catch (error) {
+      toast({
+        title: "Github loggin error",
+        description: "There was an error logging in with Github.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className={cn("grid gap-6 w-full", className)} {...props}>
@@ -62,7 +99,7 @@ const UserAuthForm = ({ className, ...props }: UserAuthFormProps) => {
         variant="outline"
         type="button"
         disabled={isLoading}
-        onClick={() => signIn("google", { callbackUrl: "/" })}
+        onClick={loginWithGoogle}
       >
         {isLoading ? (
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -75,7 +112,7 @@ const UserAuthForm = ({ className, ...props }: UserAuthFormProps) => {
         variant="outline"
         type="button"
         disabled={isLoading}
-        onClick={() => signIn("github", { callbackUrl: "/" })}
+        onClick={loginWithGithub}
       >
         {isLoading ? (
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
