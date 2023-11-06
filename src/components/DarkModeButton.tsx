@@ -4,9 +4,8 @@ import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
-import { FC } from "react";
 
-const DarkModeButton: FC = () => {
+const DarkModeButton = () => {
   const { setTheme, theme } = useTheme();
 
   return (

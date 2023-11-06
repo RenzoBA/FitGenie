@@ -64,8 +64,8 @@ export const authOptions: NextAuthOptions = {
           id: token.id,
           name: token.name,
           email: token.email,
-          picture: token.picture,
-        } as { id: string; name: string; email: string; picture: string };
+          image: token.picture,
+        } as { id: string; name: string; email: string; image: string };
       }
       return session;
     },
