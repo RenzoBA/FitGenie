@@ -4,7 +4,7 @@ import { rateLimiter } from "./lib/rate-limiter";
 
 export async function middleware(req: NextRequest) {
   const identifier =
-    req.cookies.get("next-auth.session-token")?.value ?? "127.0.0.1";
+    req.cookies.get("__Secure-next-auth.session-token")?.value ?? "127.0.0.1";
 
   try {
     const { success } = await rateLimiter.limit(identifier);
