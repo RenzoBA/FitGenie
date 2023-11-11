@@ -14,7 +14,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 import { Pagination } from "swiper/modules";
-import { toast } from "@/app/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 const MessagesLiked = () => {
   const searchParams = useSearchParams();

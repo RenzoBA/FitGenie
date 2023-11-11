@@ -28,7 +28,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { uploadFile } from "@/helpers/functions/upload-file";
 import { useSession } from "next-auth/react";
-import { toast } from "@/app/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 const UserForm = () => {
   const [user, setUser] = useState<User>({

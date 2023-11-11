@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Github, Chrome, Loader2 } from "lucide-react";
 import { signIn } from "next-auth/react";
-import { toast } from "@/app/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 

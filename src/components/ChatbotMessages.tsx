@@ -10,7 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { Message } from "@/lib/validators/message";
 import { UserProtectedContext } from "@/context/user-protected";
-import { toast } from "@/app/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 interface ChatbotMessagesProps extends HTMLAttributes<HTMLDivElement> {}
 
