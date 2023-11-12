@@ -32,9 +32,7 @@ interface SignButtonProps {
 }
 
 const SignButton = ({ session }: SignButtonProps) => {
-  console.log(session);
-
-  if (!session?.user) {
+  if (!session) {
     return (
       <div className="flex gap-2">
         <Link
