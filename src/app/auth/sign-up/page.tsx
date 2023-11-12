@@ -12,8 +12,8 @@ const page: NextPage = () => {
           src="/assets/fg-coach.jpeg"
           alt="authentication"
           className="absolute inset-0 object-cover w-[105%] h-full object-top"
-          height={1280}
-          width={843}
+          quality={60}
+          fill
         />
         <div className="hidden lg:flex relative z-20 mt-auto w-fit">
           <blockquote className="space-y-2">
