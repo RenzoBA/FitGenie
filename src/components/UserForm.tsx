@@ -27,6 +27,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { toast } from "@/hooks/use-toast";
 import axios from "axios";
 import { UserFormRequest } from "@/lib/validators/user-form";
+import { useRouter } from "next/navigation";
 
 interface UserFormProps {
   user: User;
@@ -34,6 +35,7 @@ interface UserFormProps {
 
 const UserForm: FC<UserFormProps> = ({ user }) => {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const [currentUser, setCurrentUser] = useState<UserFormRequest>({
     _id: user._id,
@@ -59,6 +61,7 @@ const UserForm: FC<UserFormProps> = ({ user }) => {
     },
     onSuccess: (currentUserData) => {
       queryClient.setQueryData(["user"], currentUserData);
+      router.refresh();
 
       toast({
         title: "Updated successfully",
