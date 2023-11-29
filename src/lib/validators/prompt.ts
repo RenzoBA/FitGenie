@@ -2,7 +2,9 @@ import { z } from "zod";
 import { MessageArrayValidator } from "./message";
 
 const paramsValidator = z.object({
-  mood: z.enum(["friendly", "rude"]),
+  treatment: z.enum(["educated", "rude"]),
+  length: z.enum(["detailed", "concise"]),
+  mood: z.enum(["funny", "serious"]),
 });
 
 export const promptValidator = z.object({

@@ -31,7 +31,7 @@ export async function POST(req: Request) {
 
     outboundMessages.unshift({
       role: "system",
-      content: chatbotPrompt(user, params.mood) as string,
+      content: chatbotPrompt(user, params) as string,
     });
 
     const payload: OpenAIStreamPayload = {

@@ -1,3 +1,5 @@
 export interface Params {
-  mood: "friendly" | "rude";
+  treatment: "educated" | "rude";
+  length: "detailed" | "concise";
+  mood: "funny" | "serious";
 }

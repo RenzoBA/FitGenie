@@ -17,7 +17,9 @@ export const MessagesContext = createContext<{
   handlelikeMessage: (message: MessageRequest) => void;
   streamMessage: (id: string, updateFn: (prevText: string) => string) => void;
   params: {
-    mood: "friendly" | "rude";
+    treatment: "educated" | "rude";
+    length: "detailed" | "concise";
+    mood: "funny" | "serious";
   };
   setParams: Dispatch<SetStateAction<Params>>;
 }>({
@@ -26,7 +28,9 @@ export const MessagesContext = createContext<{
   handlelikeMessage: () => {},
   streamMessage: () => {},
   params: {
-    mood: "friendly",
+    treatment: "educated",
+    length: "concise",
+    mood: "serious",
   },
   setParams: () => {},
 });
@@ -36,11 +40,15 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
     {
       _id: crypto.randomUUID(),
       isUserMessage: false,
-      text: "Hi big boy, how can I help you today? 😀💪",
+      text: "Hi big guy, how can I help you today? 😀💪",
       like: false,
     },
   ]);
-  const [params, setParams] = useState<Params>({ mood: "friendly" });
+  const [params, setParams] = useState<Params>({
+    treatment: "educated",
+    length: "concise",
+    mood: "serious",
+  });
 
   const addMessage = (message: MessageRequest) => {
     setMessages((prev) => [...prev, message]);
