@@ -167,7 +167,6 @@ const UserForm: FC<UserFormProps> = ({ user }) => {
         <Label htmlFor="name">Name</Label>
         <Input
           required
-          autoFocus
           disabled={updateUserLoading}
           type="text"
           id="name"
