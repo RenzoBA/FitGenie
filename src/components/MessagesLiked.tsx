@@ -1,49 +1,26 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 import MessageLiked from "./MessageLiked";
-import { Message } from "@/lib/validators/message";
-import { useContext } from "react";
-import { UserProtectedContext } from "@/context/user-protected";
-import { MessagesContext } from "@/context/messages";
+import { MessageRequest } from "@/lib/validators/message";
 import MessageLikedSkeleton from "./skeleton/MessageLikedSkeleton";
 import { Swiper, SwiperSlide } from "swiper/react";
-
+import { Pagination } from "swiper/modules";
+import axios from "axios";
 import "swiper/css";
 import "swiper/css/pagination";
 
-import { Pagination } from "swiper/modules";
-import { toast } from "@/hooks/use-toast";
-
 const MessagesLiked = () => {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  const { data, refetchData, dataLoading } = useContext(UserProtectedContext);
-  const { likeMessage } = useContext(MessagesContext);
+  const { data, isLoading } = useQuery({
+    queryKey: ["messages"],
+    queryFn: async () => {
+      const { data } = await axios.get("/api/user/messages");
 
-  const { mutate: handlerUserMessagesLike } = useMutation({
-    mutationKey: ["likeMessage"],
-    mutationFn: async (_message: Message) => {
-      likeMessage(_message);
-      const res = await fetch(`/api/user/messages?id=${id}`, {
-        method: "PUT",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ _message }),
-      });
-      refetchData();
-      toast({
-        title: "Removed successfully",
-        description: "The message was removed",
-      });
-      return res.body;
+      return data as MessageRequest[];
     },
   });
 
-  if (dataLoading) {
+  if (isLoading) {
     return (
       <Swiper
         slidesPerView={1}
@@ -77,10 +54,13 @@ const MessagesLiked = () => {
     );
   }
 
-  if (data?.user?.messagesLiked!.length === 0) {
+  if (data?.length === 0) {
     return (
-      <div className="flex items-center justify-center h-72 w-full">
-        <p className="text-muted-foreground">No messages</p>
+      <div className="flex flex-col items-center justify-center h-72 w-full">
+        <p className="text-muted-foreground/50 text-lg">No messages</p>
+        <p className="text-muted-foreground/40 text-sm">
+          Like some messages to show them here.
+        </p>
       </div>
     );
   }
@@ -104,13 +84,9 @@ const MessagesLiked = () => {
         grabCursor={true}
         modules={[Pagination]}
       >
-        {data.user?.messagesLiked!.map((message: Message) => (
+        {data!.map((message: MessageRequest) => (
           <SwiperSlide key={message._id}>
-            <MessageLiked
-              user={data?.user!}
-              message={message}
-              handlerUserMessagesLike={handlerUserMessagesLike}
-            />
+            <MessageLiked message={message} />
           </SwiperSlide>
         ))}
       </Swiper>

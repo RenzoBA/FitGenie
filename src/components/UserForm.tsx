@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, FC, FormEvent, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "./ui/textarea";
@@ -14,10 +14,8 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { User } from "@/types/user";
-import { useMutation } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Pen, Save } from "lucide-react";
-import { UserProtectedContext } from "@/context/user-protected";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,107 +24,87 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { uploadFile } from "@/helpers/functions/upload-file";
-import { useSession } from "next-auth/react";
 import { toast } from "@/hooks/use-toast";
+import axios from "axios";
+import { UserFormRequest } from "@/lib/validators/user-form";
 
-const UserForm = () => {
-  const [user, setUser] = useState<User>({
-    image: "",
-    name: "",
-    age: "",
-    sex: "",
-    height: "",
-    weight: "",
-    level: "",
-    goal: "",
-    motivation: "",
+interface UserFormProps {
+  user: User;
+}
+
+const UserForm: FC<UserFormProps> = ({ user }) => {
+  const queryClient = useQueryClient();
+
+  const [currentUser, setCurrentUser] = useState<UserFormRequest>({
+    _id: user._id,
+    image: user.image,
+    name: user.name,
+    age: user.age,
+    sex: user.sex,
+    height: +user.height.$numberDecimal,
+    weight: +user.weight.$numberDecimal,
+    level: user.level,
+    goal: user.goal,
+    motivation: user.motivation,
   });
 
-  const { data, refetchData, dataLoading } = useContext(UserProtectedContext);
-  const { update } = useSession();
-
-  useEffect(() => {
-    const getUser = () => {
-      if (data?.user) {
-        setUser(data?.user);
-      }
-    };
-    getUser();
-  }, [data?.user]);
-
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-
   const { mutate: updateUser, isLoading: updateUserLoading } = useMutation({
-    mutationKey: ["userID"],
-    mutationFn: async (user: User) => {
-      const userPhotoURL = await uploadFile(user.image! as File, "image");
+    mutationKey: ["updateUser"],
+    mutationFn: async (currentUser: UserFormRequest) => {
+      const payload: UserFormRequest = currentUser;
 
-      const formData = new FormData();
-      formData.append("name", user.name);
-      formData.append("age", user.age);
-      formData.append("sex", user.sex);
-      formData.append("height", user.height);
-      formData.append("weight", user.weight);
-      formData.append("level", user.level);
-      formData.append("goal", user.goal);
-      formData.append("motivation", user.motivation);
-      formData.append("image", userPhotoURL);
+      const { data } = await axios.put("/api/user", payload);
 
-      const res = await fetch(`/api/user?id=${id}`, {
-        method: "PUT",
-        body: formData,
-      });
-      refetchData();
-      update();
+      return data;
+    },
+    onSuccess: (currentUserData) => {
+      queryClient.setQueryData(["user"], currentUserData);
+
       toast({
         title: "Updated successfully",
         description: "Your info was updated",
       });
-      return res.body;
     },
   });
 
-  const handleChange = (
-    e: string | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  const handleStringUserData = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    if (typeof e === "string") {
-      if (e === "male" || e === "female") {
-        setUser((prevUser) => ({
-          ...prevUser,
-          sex: e,
+    setCurrentUser((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+  };
+
+  const handleNumberUserData = (e: ChangeEvent<HTMLInputElement>) => {
+    setCurrentUser((prev) => ({ ...prev, [e.target.id]: +e.target.value }));
+  };
+
+  const handleImageUser = (image: File) => {
+    if (image) {
+      const reader = new FileReader();
+
+      reader.readAsDataURL(image);
+
+      reader.onloadend = () => {
+        setCurrentUser((prev) => ({
+          ...prev,
+          image: reader.result as string,
         }));
-      } else if (
-        e === "beginner" ||
-        e === "intermediate" ||
-        e === "advanced" ||
-        e === "expert"
-      ) {
-        setUser((prevUser) => ({
-          ...prevUser,
-          level: e,
-        }));
-      }
-    } else if (e.target.id === "image") {
-      const target = e.target as HTMLInputElement;
-      if (target.files && target.files.length > 0) {
-        setUser((prevUser) => ({
-          ...prevUser,
-          image: target.files![0],
-        }));
-      }
-    } else {
-      setUser((prevUser) => ({
-        ...prevUser,
-        [e.target.id]: e.target.value,
-      }));
+      };
     }
+  };
+
+  const handleSexUser = (sex: "male" | "female") => {
+    setCurrentUser((prev) => ({ ...prev, sex }));
+  };
+
+  const handleLevelUser = (
+    level: "beginner" | "intermediate" | "advanced" | "expert"
+  ) => {
+    setCurrentUser((prev) => ({ ...prev, level }));
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    updateUser(user!);
+    updateUser(currentUser);
   };
 
   return (
@@ -134,27 +112,18 @@ const UserForm = () => {
       <div className="grid w-full justify-center items-center gap-2">
         <div className="relative py-5">
           <Input
-            disabled={dataLoading || updateUserLoading}
+            disabled={updateUserLoading}
             id="image"
             name="image"
             type="file"
             accept="image/png, image/jpeg"
-            onChange={handleChange}
+            onChange={(e) => handleImageUser(e.target.files![0])}
             className="hidden"
           />
           <Avatar className="h-60 w-60 border border-border">
-            <AvatarImage
-              src={
-                !user?.image
-                  ? ""
-                  : typeof user?.image === "string"
-                  ? user?.image
-                  : URL.createObjectURL(user?.image)
-              }
-              alt="user-picture"
-            />
+            <AvatarImage src={currentUser.image} alt="user-picture" />
             <AvatarFallback className="uppercase text-9xl">
-              {user?.name?.split(" ")[0][0]}
+              {currentUser?.name?.split(" ")[0][0]}
             </AvatarFallback>
           </Avatar>
           <DropdownMenu>
@@ -177,9 +146,11 @@ const UserForm = () => {
                     Update photo
                   </label>
                 </DropdownMenuItem>
-                <DropdownMenuItem disabled={user?.image === ""}>
+                <DropdownMenuItem disabled={currentUser.image === ""}>
                   <Button
-                    onClick={() => setUser({ ...user, image: "" })}
+                    onClick={() =>
+                      setCurrentUser((prev) => ({ ...prev, image: "" }))
+                    }
                     className="flex flew-row items-center justify-start gap-1 w-full p-0 h-fit"
                     variant="ghost"
                     type="button"
@@ -197,13 +168,13 @@ const UserForm = () => {
         <Input
           required
           autoFocus
-          disabled={dataLoading || updateUserLoading}
+          disabled={updateUserLoading}
           type="text"
           id="name"
           placeholder="Name"
-          value={user?.name}
+          value={currentUser?.name}
           minLength={3}
-          onChange={handleChange}
+          onChange={(e) => handleStringUserData(e)}
           className="sm:max-w-[24rem]"
         />
         <p className="text-sm text-muted-foreground">
@@ -215,61 +186,64 @@ const UserForm = () => {
         <Label htmlFor="age">Age</Label>
         <Input
           required
-          disabled={dataLoading || updateUserLoading}
+          disabled={updateUserLoading}
           type="number"
           id="age"
           placeholder="Age"
-          value={user?.age}
-          onChange={handleChange}
+          value={currentUser?.age}
+          onChange={(e) => handleNumberUserData(e)}
           min={18}
-          max={60}
+          max={70}
           className="sm:max-w-[12rem]"
         />
         <p className="text-sm text-muted-foreground">
           This is the age that will be used to customized your workout routines.
         </p>
       </div>
-
       <div className="grid w-full items-center gap-2">
         <Label htmlFor="height">Height</Label>
         <Input
           required
-          disabled={dataLoading || updateUserLoading}
+          disabled={updateUserLoading}
           type="number"
           id="height"
           placeholder="Height (ft)"
-          value={user?.height}
-          onChange={handleChange}
+          value={currentUser?.height}
+          onChange={(e) => handleNumberUserData(e)}
+          min={0}
+          step={0.1}
           className="sm:max-w-[12rem]"
         />
         <p className="text-sm text-muted-foreground">
-          This is the height that will be used to evaluate your progress.
+          This is the height in feets (ft) that will be used to evaluate your
+          progress.
         </p>
       </div>
-
       <div className="grid w-full items-center gap-2">
         <Label htmlFor="weight">Weight</Label>
         <Input
           required
-          disabled={dataLoading || updateUserLoading}
+          disabled={updateUserLoading}
           type="number"
           id="weight"
           placeholder="Weight (lb)"
-          value={user?.weight}
-          onChange={handleChange}
+          value={currentUser?.weight}
+          onChange={(e) => handleNumberUserData(e)}
+          min={0}
+          step={0.1}
           className="sm:max-w-[12rem]"
         />
         <p className="text-sm text-muted-foreground">
-          This is the height that will be used to evaluate your progress.
+          This is the height in pounds (lb) that will be used to evaluate your
+          progress.
         </p>
       </div>
-
       <RadioGroup
         required
-        disabled={dataLoading || updateUserLoading}
+        disabled={updateUserLoading}
         id="sex"
-        value={user?.sex}
-        onValueChange={handleChange}
+        value={currentUser?.sex}
+        onValueChange={(sex: "male" | "female") => handleSexUser(sex)}
         className="grid w-full items-center gap-2"
       >
         <Label htmlFor="sex">Sex</Label>
@@ -289,7 +263,6 @@ const UserForm = () => {
           This is the sex that will be used to customized your workout routines.
         </p>
       </RadioGroup>
-
       <div
         id="level"
         className="flex flex-col gap-3 items-center col-start-1 col-end-5 w-full"
@@ -297,9 +270,12 @@ const UserForm = () => {
         <div className="grid w-full items-center gap-2">
           <Label htmlFor="level">Level</Label>
           <Select
-            disabled={dataLoading || updateUserLoading}
-            value={user?.level}
-            onValueChange={handleChange}
+            disabled={updateUserLoading}
+            defaultValue="beginner"
+            value={currentUser?.level}
+            onValueChange={(
+              level: "beginner" | "intermediate" | "advanced" | "expert"
+            ) => handleLevelUser(level)}
           >
             <SelectTrigger className="sm:max-w-[12rem]">
               <SelectValue placeholder="Select level" />
@@ -343,15 +319,14 @@ const UserForm = () => {
           </li>
         </ul>
       </div>
-
       <div className="grid w-full items-center gap-2">
         <Label htmlFor="goal">Goal</Label>
         <Textarea
-          disabled={dataLoading || updateUserLoading}
+          disabled={updateUserLoading}
           id="goal"
           placeholder={`Examples: "Reduce 10 lb in 2 months by going to the gym 3 times a week", "Strengthen my legs by training with dumbbells at home", "Run 10 km in 30 minutes".`}
-          value={user?.goal}
-          onChange={handleChange}
+          value={currentUser?.goal}
+          onChange={(e) => handleStringUserData(e)}
           rows={5}
         />
         <p className="text-sm text-muted-foreground">
@@ -359,15 +334,14 @@ const UserForm = () => {
           Coach answers. Please be detailed.
         </p>
       </div>
-
       <div className="grid w-full items-center gap-2">
         <Label htmlFor="motivation">Motivation</Label>
         <Textarea
-          disabled={dataLoading || updateUserLoading}
+          disabled={updateUserLoading}
           id="motivation"
           placeholder={`Examples: "Arrive in good shape for the next summer", "Win my first triathlon competition", "Impress my ex ;)".`}
-          value={user?.motivation}
-          onChange={handleChange}
+          value={currentUser?.motivation}
+          onChange={(e) => handleStringUserData(e)}
           rows={5}
         />
         <p className="text-sm text-muted-foreground">
@@ -375,16 +349,15 @@ const UserForm = () => {
           FitGenie Coach answers. Please be detailed.
         </p>
       </div>
-
       <Button type="submit" variant="default" className="w-full">
-        {updateUserLoading ? (
-          <Loader2 className="w-3 h-3 animate-spin" />
-        ) : (
-          <div className="flex flew-row justify-center items-center gap-1 w-full">
-            <Save size={18} />
-            <span>Save</span>
-          </div>
-        )}
+        <div className="flex flew-row justify-center items-center gap-1 w-full">
+          {updateUserLoading ? (
+            <Loader2 size={18} className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Save size={18} className="mr-2 h-4 w-4" />
+          )}
+          <span>Save</span>
+        </div>
       </Button>
     </form>
   );

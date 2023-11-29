@@ -3,11 +3,11 @@
 import { useContext } from "react";
 import { Switch } from "./ui/switch";
 import { Label } from "@/components/ui/label";
-import { UserProtectedContext } from "@/context/user-protected";
 import { Badge } from "./ui/badge";
+import { MessagesContext } from "@/context/messages";
 
 const ChatbotParams = () => {
-  const { params, setParams } = useContext(UserProtectedContext);
+  const { params, setParams } = useContext(MessagesContext);
 
   const handleCheckedChange = () => {
     setParams((prevParams) => ({

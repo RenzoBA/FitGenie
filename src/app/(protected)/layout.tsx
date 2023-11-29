@@ -1,5 +1,6 @@
 import Alert from "@/components/Alert";
 import { getAuthSession } from "@/lib/auth";
+import connectDB from "@/lib/mongoose";
 import { ReactNode } from "react";
 
 interface layoutProps {
@@ -8,6 +9,8 @@ interface layoutProps {
 
 const layout = async ({ children }: layoutProps) => {
   const session = await getAuthSession();
+
+  await connectDB();
 
   if (!session) {
     return (

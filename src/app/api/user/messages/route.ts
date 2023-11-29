@@ -1,56 +1,47 @@
-import { decrypt } from "@/helpers/functions/encrypt";
+import { getAuthSession } from "@/lib/auth";
 import connectDB from "@/lib/mongoose";
-import { Message } from "@/lib/validators/message";
+import { MessageValidator } from "@/lib/validators/message";
 import { User } from "@/models/user";
 import { NextResponse } from "next/server";
 
-export const GET = async (req: Request) => {
+export const GET = async () => {
   try {
     await connectDB();
+    const session = await getAuthSession();
 
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
-    const email = decrypt(id!);
-
-    const user = await User.findOne({ email });
-
-    let userMessagesLiked: Message[];
-    if (user) {
-      userMessagesLiked = user.messagesLiked;
-    } else {
-      userMessagesLiked = [];
+    if (!session) {
+      return new Response("Unauthorized access", { status: 401 });
     }
 
-    return NextResponse.json(userMessagesLiked, { status: 200 });
+    const user = await User.findOne({ email: session.user?.email });
+
+    return NextResponse.json(user?.messagesLiked ?? [], { status: 200 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 404 });
   }
 };
 
-export const PUT = async (req: Request) => {
+export const PATCH = async (req: Request) => {
   try {
     await connectDB();
+    const session = await getAuthSession();
 
-    const { _message } = await req.json();
+    if (!session) {
+      return new Response("Unauthorized access", { status: 401 });
+    }
 
-    const message = {
-      _id: _message._id,
-      isUserMessage: _message.isUserMessage,
-      text: _message.text,
-    };
+    const body = await req.json();
+    const message = MessageValidator.parse(body);
+    const email = session.user?.email;
 
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
-
-    const email = decrypt(id!);
-
-    const user = await User.findOne({
+    const isMessageLiked = await User.findOne({
       email,
       messagesLiked: message,
     });
 
     let userUpdated;
-    if (user) {
+
+    if (isMessageLiked) {
       userUpdated = await User.findOneAndUpdate(
         { email },
         { $pull: { messagesLiked: message } },
@@ -64,7 +55,7 @@ export const PUT = async (req: Request) => {
       );
     }
 
-    return NextResponse.json({ userUpdated }, { status: 200 });
+    return NextResponse.json(userUpdated.messagesLiked, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 404 });
   }

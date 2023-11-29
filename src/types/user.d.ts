@@ -1,17 +1,21 @@
 import { Message } from "@/lib/validators/message";
 
+interface DecimalNumber {
+  $numberDecimal: string;
+}
+
 export interface User {
-  _id?: string;
+  _id: string;
   name: string;
-  email?: string;
-  image: File | string | null;
-  emailVerified?: boolean;
-  age: string;
-  sex: string;
-  height: string;
-  weight: string;
-  level: string;
+  email: string;
+  image: string;
+  emailVerified: boolean | null;
+  age: number;
+  sex: "male" | "female";
+  height: DecimalNumber;
+  weight: DecimalNumber;
+  level: "beginner" | "intermediate" | "advanced" | "expert";
   goal: string;
   motivation: string;
-  messagesLiked?: Message[];
+  messagesLiked: Message[];
 }

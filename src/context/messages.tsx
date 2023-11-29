@@ -1,45 +1,52 @@
-import { Message } from "@/lib/validators/message";
-import { ReactNode, createContext, useState } from "react";
+import { MessageRequest } from "@/lib/validators/message";
+import { Params } from "@/types/params";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useState,
+} from "react";
 
 interface MessagesProviderProps {
   children: ReactNode;
 }
 export const MessagesContext = createContext<{
-  messages: Message[];
-  isMessageUpdating: boolean;
-  addMessage: (message: Message) => void;
-  likeMessage: (message: Message) => void;
-  dislikeMessage: (message: Message) => void;
-  removeMessage: (id: string) => void;
-  updateMessage: (id: string, updateFn: (prevText: string) => string) => void;
-  setIsMessageUpdating: (isUpdating: boolean) => void;
+  messages: MessageRequest[];
+  addMessage: (message: MessageRequest) => void;
+  handlelikeMessage: (message: MessageRequest) => void;
+  streamMessage: (id: string, updateFn: (prevText: string) => string) => void;
+  params: {
+    mood: "friendly" | "rude";
+  };
+  setParams: Dispatch<SetStateAction<Params>>;
 }>({
   messages: [],
-  isMessageUpdating: false,
   addMessage: () => {},
-  likeMessage: () => {},
-  dislikeMessage: () => {},
-  removeMessage: () => {},
-  updateMessage: () => {},
-  setIsMessageUpdating: () => {},
+  handlelikeMessage: () => {},
+  streamMessage: () => {},
+  params: {
+    mood: "friendly",
+  },
+  setParams: () => {},
 });
 
 export const MessagesProvider = ({ children }: MessagesProviderProps) => {
-  const [messages, setMessages] = useState<Message[]>([
+  const [messages, setMessages] = useState<MessageRequest[]>([
     {
       _id: crypto.randomUUID(),
       isUserMessage: false,
-      text: "Hola chico grande, en qué puedo ayudarte hoy? 😀💪",
+      text: "Hi big boy, how can I help you today? 😀💪",
       like: false,
     },
   ]);
-  const [isMessageUpdating, setIsMessageUpdating] = useState<boolean>(false);
+  const [params, setParams] = useState<Params>({ mood: "friendly" });
 
-  const addMessage = (message: Message) => {
+  const addMessage = (message: MessageRequest) => {
     setMessages((prev) => [...prev, message]);
   };
 
-  const likeMessage = (message: Message) => {
+  const handlelikeMessage = (message: MessageRequest) => {
     setMessages((prev) =>
       prev.map((prevMessage) =>
         prevMessage._id === message._id
@@ -49,21 +56,7 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
     );
   };
 
-  const dislikeMessage = (message: Message) => {
-    setMessages((prev) =>
-      prev.map((prevMessage) =>
-        prevMessage === message
-          ? { ...message, like: !message.like }
-          : prevMessage
-      )
-    );
-  };
-
-  const removeMessage = (id: string) => {
-    setMessages((prev) => prev.filter((message) => message._id !== id));
-  };
-
-  const updateMessage = (
+  const streamMessage = (
     id: string,
     updateFn: (prevText: string) => string
   ) => {
@@ -81,13 +74,11 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
     <MessagesContext.Provider
       value={{
         messages,
-        isMessageUpdating,
         addMessage,
-        likeMessage,
-        dislikeMessage,
-        removeMessage,
-        updateMessage,
-        setIsMessageUpdating,
+        handlelikeMessage,
+        streamMessage,
+        params,
+        setParams,
       }}
     >
       {children}

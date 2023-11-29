@@ -1,60 +1,61 @@
 "use client";
 
 import { MessagesContext } from "@/context/messages";
-import { UserProtectedContext } from "@/context/user-protected";
 import { cn } from "@/lib/utils";
-import { Message } from "@/lib/validators/message";
+import { MessageRequest } from "@/lib/validators/message";
 import { useMutation } from "@tanstack/react-query";
 import { CornerDownLeft, Loader2 } from "lucide-react";
 import { FC, HTMLAttributes, useContext, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { Button } from "./ui/button";
+import { toast } from "@/hooks/use-toast";
+import { promptRequest } from "@/lib/validators/prompt";
 
 interface ChatbotInputProps extends HTMLAttributes<HTMLDivElement> {}
 
 const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
   const [input, setInput] = useState<string>("");
-  const {
-    messages,
-    addMessage,
-    removeMessage,
-    updateMessage,
-    setIsMessageUpdating,
-  } = useContext(MessagesContext);
-
-  const { data, params } = useContext(UserProtectedContext);
+  const { messages, addMessage, streamMessage, params } =
+    useContext(MessagesContext);
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const { mutate: sendMessage, isLoading } = useMutation({
     mutationKey: ["sendMessage"],
-    mutationFn: async (_message: Message) => {
+    mutationFn: async (currentUserMessage: MessageRequest) => {
+      const payload: promptRequest = {
+        params,
+        messages: [...messages, currentUserMessage],
+      };
+
+      // const { data } = await axios.post("/api/message", payload);
+      // return data;
+
       const res = await fetch("/api/message", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ data, params, messages }),
+        body: JSON.stringify(payload),
       });
+
       return res.body;
     },
-    onMutate(message) {
-      addMessage(message);
+    onMutate(currentUserMessage: MessageRequest) {
+      addMessage(currentUserMessage);
     },
     onSuccess: async (stream) => {
       if (!stream) throw new Error("No stream found");
 
       const _id = crypto.randomUUID();
-      const responseMessage: Message = {
+      const currentSystemMessage: MessageRequest = {
         _id,
         isUserMessage: false,
         text: "",
         like: false,
       };
 
-      addMessage(responseMessage);
-
-      setIsMessageUpdating(true);
+      addMessage(currentSystemMessage);
 
       const reader = stream.getReader();
       const decoder = new TextDecoder();
@@ -64,20 +65,23 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
         const { value, done: doneReading } = await reader.read();
         done = doneReading;
         const chunkValue = decoder.decode(value);
-        updateMessage(_id, (prev) => prev + chunkValue);
+        streamMessage(_id, (prev) => prev + chunkValue);
       }
 
       setInput("");
-      setIsMessageUpdating(false);
 
       setTimeout(() => {
         textareaRef.current?.focus();
       }, 10);
     },
-    onError: (_, message) => {
-      alert("Something went wrong. Please try again.");
-      removeMessage(message._id);
-      textareaRef.current?.focus();
+    onError: (error) => {
+      console.error(error);
+
+      toast({
+        title: "Ups! Something went wrong",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
     },
   });
 
@@ -91,7 +95,7 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
 
-              const message: Message = {
+              const message: MessageRequest = {
                 _id: crypto.randomUUID(),
                 isUserMessage: true,
                 text: input,
@@ -117,7 +121,7 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
                 type="submit"
                 className="px-0"
                 onClick={() => {
-                  const message: Message = {
+                  const message: MessageRequest = {
                     _id: crypto.randomUUID(),
                     isUserMessage: true,
                     text: input,

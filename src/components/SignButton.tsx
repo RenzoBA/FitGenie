@@ -14,7 +14,6 @@ import {
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { encrypt } from "@/helpers/functions/encrypt";
 import {
   Sheet,
   SheetClose,
@@ -25,6 +24,9 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import { Separator } from "./ui/separator";
+import { User as UserType } from "@/types/user";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { Session } from "next-auth";
 
 interface SignButtonProps {
@@ -32,6 +34,15 @@ interface SignButtonProps {
 }
 
 const SignButton = ({ session }: SignButtonProps) => {
+  const { data } = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => {
+      const { data } = await axios.get("/api/user");
+
+      return data as UserType;
+    },
+  });
+
   if (!session) {
     return (
       <div className="flex gap-2">
@@ -49,9 +60,9 @@ const SignButton = ({ session }: SignButtonProps) => {
     <Sheet>
       <SheetTrigger asChild className="cursor-pointer">
         <Avatar>
-          <AvatarImage src={session!.user?.image!} alt="" />
+          <AvatarImage src={data?.image} alt="" />
           <AvatarFallback className="uppercase">
-            {session!.user?.name?.split(" ")[0][0]}
+            {data?.name?.split(" ")[0][0]}
           </AvatarFallback>
         </Avatar>
       </SheetTrigger>
@@ -60,16 +71,14 @@ const SignButton = ({ session }: SignButtonProps) => {
           <SheetTitle>My Account</SheetTitle>
           <div className="flex flex-row gap-2 justify-start items-center">
             <Avatar>
-              <AvatarImage src={session!.user?.image!} alt="" />
+              <AvatarImage src={data?.image} alt="" />
               <AvatarFallback className="uppercase">
-                {session!.user?.name?.split(" ")[0][0]}
+                {data?.name?.split(" ")[0][0]}
               </AvatarFallback>
             </Avatar>
             <div className="text-left">
-              <p className="text-lg">{session!.user?.name}</p>
-              <p className="text-xs text-muted-foreground">
-                {session!.user?.email}
-              </p>
+              <p className="text-lg">{data?.name}</p>
+              <p className="text-xs text-muted-foreground">{data?.email}</p>
             </div>
           </div>
         </SheetHeader>
@@ -77,10 +86,7 @@ const SignButton = ({ session }: SignButtonProps) => {
         <div className="flex flex-col items-center sm:items-start tracking-wider">
           <SheetClose asChild>
             <Link
-              href={{
-                pathname: "/user",
-                query: { id: encrypt(session!.user?.email!) },
-              }}
+              href="/user"
               className="flex flew-row items-center gap-2 text-primary font-light w-full transition-all rounded-sm px-2 py-1.5 hover:bg-accent hover:text-accent-foreground"
             >
               <User size={18} />
@@ -89,10 +95,7 @@ const SignButton = ({ session }: SignButtonProps) => {
           </SheetClose>
           <SheetClose asChild>
             <Link
-              href={{
-                pathname: "/chatbot",
-                query: { id: encrypt(session!.user?.email!) },
-              }}
+              href="/chatbot"
               className="flex flew-row items-center gap-2 text-primary font-light w-full transition-all rounded-sm px-2 py-1.5 hover:bg-accent hover:text-accent-foreground"
             >
               <MessagesSquare size={18} />

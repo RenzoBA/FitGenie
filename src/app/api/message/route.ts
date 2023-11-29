@@ -1,39 +1,55 @@
 import { chatbotPrompt } from "@/helpers/constants/chatbot-prompts";
+import { getAuthSession } from "@/lib/auth";
 import {
   ChatGPTMessage,
   OpenAIStream,
   OpenAIStreamPayload,
 } from "@/lib/openai-stream";
-import { MessageArraySchema } from "@/lib/validators/message";
+import { promptValidator } from "@/lib/validators/prompt";
+import { User } from "@/models/user";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { data, params, messages } = await req.json();
+  try {
+    const session = await getAuthSession();
 
-  const parsedMessages = MessageArraySchema.parse(messages);
+    if (!session) {
+      return new Response("Unauthorized access", { status: 401 });
+    }
 
-  const outboundMessages: ChatGPTMessage[] = parsedMessages.map((message) => ({
-    role: message.isUserMessage ? "user" : "system",
-    content: message.text,
-  }));
+    const user = await User.findOne({
+      email: session.user?.email,
+    });
 
-  outboundMessages.unshift({
-    role: "system",
-    content: chatbotPrompt(data.user, params.mood) as string,
-  });
+    const body = await req.json();
+    const { params, messages } = promptValidator.parse(body);
 
-  const payload: OpenAIStreamPayload = {
-    model: "gpt-3.5-turbo",
-    messages: outboundMessages,
-    temperature: 0.4,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 300,
-    stream: true,
-    n: 1,
-  };
+    const outboundMessages: ChatGPTMessage[] = messages.map((message) => ({
+      role: message.isUserMessage ? "user" : "system",
+      content: message.text,
+    }));
 
-  const stream = await OpenAIStream(payload);
+    outboundMessages.unshift({
+      role: "system",
+      content: chatbotPrompt(user, params.mood) as string,
+    });
 
-  return new Response(stream);
+    const payload: OpenAIStreamPayload = {
+      model: "gpt-3.5-turbo",
+      messages: outboundMessages,
+      temperature: 0.4,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 300,
+      stream: true,
+      n: 1,
+    };
+
+    const stream = await OpenAIStream(payload);
+
+    return new Response(stream);
+  } catch (error) {
+    return NextResponse.json({ error }, { status: 404 });
+  }
 }

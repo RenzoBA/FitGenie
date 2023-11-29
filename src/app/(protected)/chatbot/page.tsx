@@ -12,8 +12,8 @@ const page = async () => {
           Messages saved
         </h3>
         <MessagesLiked />
-        <ChatBot />
       </div>
+      <ChatBot />
     </div>
   );
 };

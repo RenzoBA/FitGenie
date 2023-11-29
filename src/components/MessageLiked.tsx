@@ -1,29 +1,50 @@
-import { Message } from "@/lib/validators/message";
-import { FC } from "react";
+"use client";
+
+import { FC, useContext } from "react";
+import { MessageRequest } from "@/lib/validators/message";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Share2, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
-import { User } from "@/types/user";
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from "./ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "@/hooks/use-toast";
+import axios from "axios";
+import { MessagesContext } from "@/context/messages";
 
 interface MessageLikedProps {
-  user: User;
-  message: Message;
-  handlerUserMessagesLike: (_message: Message) => void;
+  message: MessageRequest;
 }
 
-const MessageLiked: FC<MessageLikedProps> = ({
-  user,
-  message,
-  handlerUserMessagesLike,
-}) => {
+const MessageLiked: FC<MessageLikedProps> = ({ message }) => {
+  const { handlelikeMessage } = useContext(MessagesContext);
   const limit = 220;
+  const queryClient = useQueryClient();
+
+  const { mutate: handlerUserMessagesLike } = useMutation({
+    mutationKey: ["likeMessage", message._id],
+    mutationFn: async (_message: MessageRequest) => {
+      const payload: MessageRequest = _message;
+
+      const { data } = await axios.patch("/api/user/messages", payload);
+      return data;
+    },
+    onMutate: (_message: MessageRequest) => {
+      handlelikeMessage(_message);
+    },
+    onSuccess: (currentMessagesLiked) => {
+      queryClient.setQueryData(["messages"], currentMessagesLiked);
+      toast({
+        title: "Removed successfully",
+        description: "The message was removed",
+      });
+    },
+  });
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="flex flex-col gap-4 border border-input rounded-lg p-5 w-auto h-80 text-primary cursor-pointer">
+        <div className="flex flex-col gap-4 border border-input rounded-lg p-5 w-auto h-80 text-primary cursor-pointer hover:bg-accent transition-all">
           <div className="flex flex-row gap-2 items-center">
             <Avatar>
               <AvatarImage src="/assets/fg-coach.jpeg" alt="fg-coach" />
