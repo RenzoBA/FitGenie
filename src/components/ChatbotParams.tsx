@@ -6,6 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "./ui/badge";
 import { MessagesContext } from "@/context/messages";
 import { Separator } from "./ui/separator";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./ui/accordion";
+import { cn } from "@/lib/utils";
+import { SlidersHorizontal } from "lucide-react";
 
 // Objeto de mapeo para las propiedades y valores correspondientes
 const propertyMap: Record<string, Record<string, string>> = {
@@ -15,6 +23,29 @@ const propertyMap: Record<string, Record<string, string>> = {
 };
 
 const ChatbotParams = () => {
+  return (
+    <>
+      <Accordion type="single" collapsible className="block md:hidden border-y">
+        <AccordionItem value="params">
+          <AccordionTrigger className="text-sm hover:no-underline focus:no-underline">
+            <span className="flex items-center gap-1">
+              <SlidersHorizontal className="h-4 w-4" />
+              Params
+            </span>
+          </AccordionTrigger>
+          <AccordionContent>
+            <ParamsList className="flex flex-wrap border-y-0" />
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+      <ParamsList className="hidden md:flex flex-row" />
+    </>
+  );
+};
+
+export default ChatbotParams;
+
+const ParamsList = ({ className }: { className: string }) => {
   const { params, setParams } = useContext(MessagesContext);
 
   const handleCheckedChange = (isChecked: boolean, id: string) => {
@@ -27,8 +58,13 @@ const ChatbotParams = () => {
   };
 
   return (
-    <div className="flex items-center gap-3 px-4 py-2 border-y border-input">
-      <div className="flex flex-row items-center justify-center gap-2">
+    <div
+      className={cn(
+        "w-full items-center gap-3 px-4 py-2 border-y border-input",
+        className
+      )}
+    >
+      <div className="flex items-center justify-center gap-2">
         <Label htmlFor="treatment" className="text-xs">
           Educated
         </Label>
@@ -85,5 +121,3 @@ const ChatbotParams = () => {
     </div>
   );
 };
-
-export default ChatbotParams;
