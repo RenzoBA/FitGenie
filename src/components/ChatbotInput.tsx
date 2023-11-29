@@ -86,7 +86,7 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
   });
 
   return (
-    <div className={cn("border-t border-border", className)}>
+    <div className="border-t border-border">
       <div className="relative mt-4 flex-1 overflow-hidden rounded-lg border-none outline-none">
         <TextareaAutosize
           disabled={isLoading}
@@ -109,7 +109,7 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Write a message..."
-          className="peer disabled:opacity-50 pr-14 resize-none block w-full border-0 bg-transparent py-1.5 text-primary focus:ring-0 text-sm sm:leading-6 focus:outline-none placeholder-muted-foreground"
+          className="peer disabled:opacity-50 pl-2 pr-14 resize-none block w-full border-0 bg-transparent py-1.5 text-primary focus:ring-0 text-sm sm:leading-6 focus:outline-none placeholder-muted-foreground"
         />
         <div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
           <kbd className="inline-flex items-center px-1 font-sans text-muted-foreground">
@@ -119,7 +119,6 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
               <Button
                 variant="ghost"
                 type="submit"
-                className="px-0"
                 onClick={() => {
                   const message: MessageRequest = {
                     _id: crypto.randomUUID(),
