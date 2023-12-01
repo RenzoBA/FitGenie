@@ -1,7 +1,6 @@
 "use client";
 
 import { MessagesContext } from "@/context/messages";
-import { cn } from "@/lib/utils";
 import { MessageRequest } from "@/lib/validators/message";
 import { useMutation } from "@tanstack/react-query";
 import { CornerDownLeft, Loader2 } from "lucide-react";
@@ -25,7 +24,7 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
     mutationFn: async (currentUserMessage: MessageRequest) => {
       const payload: promptRequest = {
         params,
-        messages: [...messages, currentUserMessage],
+        messages,
       };
 
       // const { data } = await axios.post("/api/message", payload);
