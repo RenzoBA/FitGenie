@@ -2,7 +2,7 @@ import { z } from "zod";
 import { MessageArrayValidator } from "./message";
 
 const paramsValidator = z.object({
-  treatment: z.enum(["educated", "rude"]),
+  treatment: z.enum(["polite", "rude"]),
   length: z.enum(["detailed", "concise"]),
   mood: z.enum(["funny", "serious"]),
 });

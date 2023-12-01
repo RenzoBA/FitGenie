@@ -17,7 +17,7 @@ export const MessagesContext = createContext<{
   handlelikeMessage: (message: MessageRequest) => void;
   streamMessage: (id: string, updateFn: (prevText: string) => string) => void;
   params: {
-    treatment: "educated" | "rude";
+    treatment: "polite" | "rude";
     length: "detailed" | "concise";
     mood: "funny" | "serious";
   };
@@ -28,7 +28,7 @@ export const MessagesContext = createContext<{
   handlelikeMessage: () => {},
   streamMessage: () => {},
   params: {
-    treatment: "educated",
+    treatment: "polite",
     length: "concise",
     mood: "serious",
   },
@@ -45,7 +45,7 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
     },
   ]);
   const [params, setParams] = useState<Params>({
-    treatment: "educated",
+    treatment: "polite",
     length: "concise",
     mood: "serious",
   });

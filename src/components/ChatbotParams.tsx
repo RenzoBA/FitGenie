@@ -17,7 +17,7 @@ import { SlidersHorizontal } from "lucide-react";
 
 // Objeto de mapeo para las propiedades y valores correspondientes
 const propertyMap: Record<string, Record<string, string>> = {
-  ["treatment"]: { true: "rude", false: "educated" },
+  ["treatment"]: { true: "rude", false: "polite" },
   ["length"]: { true: "detailed", false: "concise" },
   ["mood"]: { true: "funny", false: "serious" },
 };
@@ -66,7 +66,7 @@ const ParamsList = ({ className }: { className: string }) => {
     >
       <div className="flex items-center justify-center gap-2">
         <Label htmlFor="treatment" className="text-xs">
-          Educated
+          Polite
         </Label>
         <Switch
           id="treatment"
