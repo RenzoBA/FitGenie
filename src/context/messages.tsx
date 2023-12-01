@@ -40,7 +40,7 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
     {
       _id: crypto.randomUUID(),
       isUserMessage: false,
-      text: "Hi big guy, how can I help you today? 😀💪",
+      text: "Hello big guy, I'm FG Coach! How can I help you today? 😀💪",
       like: false,
     },
   ]);
