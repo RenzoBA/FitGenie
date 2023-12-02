@@ -43,7 +43,7 @@ const ChatbotMessage: FC<ChatbotMessageProps> = ({ message }) => {
   const handleMessageShare = () => {};
 
   return (
-    <div key={message._id} className="chat-message">
+    <div className="chat-message">
       <div
         className={cn("flex items-end", {
           "justify-end": message.isUserMessage,
