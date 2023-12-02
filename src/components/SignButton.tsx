@@ -99,7 +99,7 @@ const SignButton = ({ session }: SignButtonProps) => {
               className="flex flew-row items-center gap-2 text-primary font-light w-full transition-all rounded-sm px-2 py-1.5 hover:bg-accent hover:text-accent-foreground"
             >
               <MessagesSquare size={18} />
-              <span>Chatbot</span>
+              <span>Chat</span>
             </Link>
           </SheetClose>
           <SheetClose asChild>
