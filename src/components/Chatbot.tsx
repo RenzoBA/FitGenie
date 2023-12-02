@@ -6,8 +6,20 @@ import ChatbotInput from "./ChatbotInput";
 import ChatbotMessages from "./ChatbotMessages";
 import ChatbotParams from "./ChatbotParams";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { User } from "@/types/user";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 const ChatBot: FC = () => {
+  const { data } = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => {
+      const { data } = await axios.get("/api/user");
+
+      return data as User;
+    },
+  });
+
   return (
     <Sheet>
       <div className="fixed left-[5%] lg:left-[10%] xl:left-[20%] bottom-0 w-[90%] lg:w-4/5 xl:w-3/5 bg-background border border-input rounded-t-md px-4 py-3">
@@ -20,7 +32,7 @@ const ChatBot: FC = () => {
         >
           <ChatbotHeader />
           <ChatbotParams />
-          <ChatbotMessages className="px-2 py-3 flex-1" />
+          <ChatbotMessages user={data} className="px-2 py-3 flex-1" />
           <ChatbotInput />
         </SheetContent>
       </div>

@@ -36,14 +36,7 @@ export const MessagesContext = createContext<{
 });
 
 export const MessagesProvider = ({ children }: MessagesProviderProps) => {
-  const [messages, setMessages] = useState<MessageRequest[]>([
-    {
-      _id: crypto.randomUUID(),
-      isUserMessage: false,
-      text: "Hello big guy, I'm FG Coach! How can I help you today? 😀💪",
-      like: false,
-    },
-  ]);
+  const [messages, setMessages] = useState<MessageRequest[]>([]);
   const [params, setParams] = useState<Params>({
     treatment: "polite",
     length: "concise",
