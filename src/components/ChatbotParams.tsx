@@ -24,7 +24,7 @@ const propertyMap: Record<string, Record<string, string>> = {
 
 const ChatbotParams = () => {
   return (
-    <>
+    <div className="px-4 bg-card">
       <Accordion type="single" collapsible className="block md:hidden border-y">
         <AccordionItem value="params">
           <AccordionTrigger className="text-sm hover:no-underline focus:no-underline">
@@ -39,7 +39,7 @@ const ChatbotParams = () => {
         </AccordionItem>
       </Accordion>
       <ParamsList className="hidden md:flex flex-row" />
-    </>
+    </div>
   );
 };
 

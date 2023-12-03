@@ -22,17 +22,17 @@ const ChatBot: FC = () => {
 
   return (
     <Sheet>
-      <div className="fixed left-[5%] lg:left-[10%] xl:left-[20%] bottom-0 w-[90%] lg:w-4/5 xl:w-3/5 bg-background border border-input rounded-t-md px-4 py-3">
+      <div className="fixed left-[3%] lg:left-[10%] xl:left-[20%] bottom-0 w-[94%] lg:w-4/5 xl:w-3/5 bg-card border border-input rounded-t-md">
         <SheetTrigger className="flex items-center w-full h-full ring-offset-background">
           <ChatbotHeader />
         </SheetTrigger>
         <SheetContent
           side="bottom"
-          className="flex flex-col h-[580px] px-4 py-3 left-[5%] lg:left-[10%] xl:left-[20%] w-[90%] lg:w-4/5 xl:w-3/5 border border-input rounded-t-md"
+          className="flex flex-col h-3/4 px-0 py-0 gap-0 left-[3%] lg:left-[10%] xl:left-[20%] w-[94%] lg:w-4/5 xl:w-3/5 border border-input rounded-t-md"
         >
           <ChatbotHeader />
           <ChatbotParams />
-          <ChatbotMessages user={data} className="px-2 py-3 flex-1" />
+          <ChatbotMessages user={data} className="px-4 pt-6 pb-3 flex-1" />
           <ChatbotInput />
         </SheetContent>
       </div>

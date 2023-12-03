@@ -85,58 +85,60 @@ const ChatbotInput: FC<ChatbotInputProps> = ({ className }) => {
   });
 
   return (
-    <div className="border-t border-border">
-      <div className="relative mt-4 flex-1 overflow-hidden rounded-lg border-none outline-none">
-        <TextareaAutosize
-          disabled={isLoading}
-          ref={textareaRef}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
+    <div className="px-4 pb-3">
+      <div className="border-t border-border">
+        <div className="relative mt-4 flex-1 overflow-hidden rounded-lg border-none outline-none">
+          <TextareaAutosize
+            disabled={isLoading}
+            ref={textareaRef}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
 
-              const message: MessageRequest = {
-                _id: crypto.randomUUID(),
-                isUserMessage: true,
-                text: input,
-                like: false,
-              };
-              sendMessage(message);
-            }
-          }}
-          rows={2}
-          maxRows={4}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Write a message..."
-          className="peer disabled:opacity-50 pl-2 pr-14 resize-none block w-full border-0 bg-transparent py-1.5 text-primary focus:ring-0 text-sm sm:leading-6 focus:outline-none placeholder-muted-foreground"
-        />
-        <div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
-          <kbd className="inline-flex items-center px-1 font-sans text-muted-foreground">
-            {isLoading ? (
-              <Loader2 className="w-3 h-3 animate-spin" />
-            ) : (
-              <Button
-                variant="ghost"
-                type="submit"
-                onClick={() => {
-                  const message: MessageRequest = {
-                    _id: crypto.randomUUID(),
-                    isUserMessage: true,
-                    text: input,
-                    like: false,
-                  };
-                  sendMessage(message);
-                }}
-              >
-                <CornerDownLeft className="w-3 h-3" />
-              </Button>
-            )}
-          </kbd>
+                const message: MessageRequest = {
+                  _id: crypto.randomUUID(),
+                  isUserMessage: true,
+                  text: input,
+                  like: false,
+                };
+                sendMessage(message);
+              }
+            }}
+            rows={2}
+            maxRows={4}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Write a message..."
+            className="peer disabled:opacity-50 pl-2 pr-14 resize-none block w-full border-0 bg-transparent py-1.5 text-primary focus:ring-0 text-sm sm:leading-6 focus:outline-none placeholder-muted-foreground"
+          />
+          <div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
+            <kbd className="inline-flex items-center px-1 font-sans text-muted-foreground">
+              {isLoading ? (
+                <Loader2 className="w-3 h-3 animate-spin" />
+              ) : (
+                <Button
+                  variant="ghost"
+                  type="submit"
+                  onClick={() => {
+                    const message: MessageRequest = {
+                      _id: crypto.randomUUID(),
+                      isUserMessage: true,
+                      text: input,
+                      like: false,
+                    };
+                    sendMessage(message);
+                  }}
+                >
+                  <CornerDownLeft className="w-3 h-3" />
+                </Button>
+              )}
+            </kbd>
+          </div>
+          <div
+            className="absolute inset-x-0 bottom-0 border-t border-border peer-focus:border-t-1 peer-focus:border-primary"
+            aria-hidden="true"
+          />
         </div>
-        <div
-          className="absolute inset-x-0 bottom-0 border-t border-border peer-focus:border-t-1 peer-focus:border-primary"
-          aria-hidden="true"
-        />
       </div>
     </div>
   );

@@ -123,7 +123,7 @@ const UserForm: FC<UserFormProps> = ({ user }) => {
             onChange={(e) => handleImageUser(e.target.files![0])}
             className="hidden"
           />
-          <Avatar className="h-60 w-60 border border-border">
+          <Avatar className="h-60 w-60 border border-border shadow">
             <AvatarImage src={currentUser.image} alt="user-picture" />
             <AvatarFallback className="uppercase text-9xl">
               {currentUser?.name?.split(" ")[0][0]}
@@ -134,7 +134,7 @@ const UserForm: FC<UserFormProps> = ({ user }) => {
               asChild
               className="cursor-pointer absolute right-2 bottom-8 bg-muted border border-border py-2 px-3 rounded-lg text-primary text-sm font-normal"
             >
-              <div className="flex flex-row gap-1 items-center">
+              <div className="flex flex-row gap-1 items-center shadow">
                 <Pen size={18} />
                 <span>Edit</span>
               </div>

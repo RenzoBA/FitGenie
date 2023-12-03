@@ -44,7 +44,7 @@ const MessageLiked: FC<MessageLikedProps> = ({ message }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="flex flex-col gap-4 border border-input rounded-lg p-5 w-auto h-80 text-primary cursor-pointer hover:bg-accent transition-all">
+        <div className="flex flex-col gap-4 rounded-lg p-5 w-auto h-80 text-primary cursor-pointer bg-card hover:bg-accent transition-all shadow">
           <div className="flex flex-row gap-2 items-center">
             <Avatar>
               <AvatarImage src="/assets/fg-coach.jpeg" alt="fg-coach" />
@@ -66,7 +66,7 @@ const MessageLiked: FC<MessageLikedProps> = ({ message }) => {
           </div>
         </div>
       </DialogTrigger>
-      <DialogContent className="flex flex-none flex-col gap-7 p-8 text-primary w-11/12 rounded-lg md:max-w-[700px]">
+      <DialogContent className="flex flex-none flex-col gap-7 p-8 text-primary w-11/12 rounded-lg md:max-w-[700px] bg-card">
         <DialogHeader>
           <div className="flex flex-row gap-2 items-center">
             <Avatar>

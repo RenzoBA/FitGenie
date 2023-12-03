@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const ChatbotHeader: FC = () => {
   return (
-    <div className="gap-3 flex justify-start items-center">
+    <div className="gap-3 flex justify-start items-center bg-card  px-4 py-3">
       <Avatar>
         <AvatarImage src="/assets/fg-coach.jpeg" alt="fg-coach" />
         <AvatarFallback>FG</AvatarFallback>
