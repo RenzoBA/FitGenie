@@ -24,9 +24,14 @@ const ChatbotMessages: FC<ChatbotMessagesProps> = ({ className, user }) => {
       <div className="flex-1 flex-grow" />
       <>
         {inverseMessages.map((message) => (
-          <ChatbotMessage message={message} key={message._id} />
+          <ChatbotMessage
+            buttonsActive={true}
+            message={message}
+            key={message._id}
+          />
         ))}
         <ChatbotMessage
+          buttonsActive={false}
           message={{
             _id: "default_message_id",
             isUserMessage: false,
