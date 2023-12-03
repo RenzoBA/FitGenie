@@ -61,7 +61,7 @@ const ChatbotMessage: FC<ChatbotMessageProps> = ({
                 message.isUserMessage,
             },
             {
-              "bg-card text-primary rounded-r-lg text-left":
+              "bg-accent text-primary rounded-r-lg text-left":
                 !message.isUserMessage,
             }
           )}
