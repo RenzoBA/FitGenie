@@ -13,10 +13,14 @@ import axios from "axios";
 import { MessagesContext } from "@/context/messages";
 
 interface ChatbotMessageProps {
+  buttonsActive: boolean;
   message: MessageRequest;
 }
 
-const ChatbotMessage: FC<ChatbotMessageProps> = ({ message }) => {
+const ChatbotMessage: FC<ChatbotMessageProps> = ({
+  buttonsActive,
+  message,
+}) => {
   const { handlelikeMessage } = useContext(MessagesContext);
   const queryClient = useQueryClient();
 
@@ -57,13 +61,13 @@ const ChatbotMessage: FC<ChatbotMessageProps> = ({ message }) => {
                 message.isUserMessage,
             },
             {
-              "bg-accent text-primary rounded-r-lg text-left":
+              "bg-card text-primary rounded-r-lg text-left":
                 !message.isUserMessage,
             }
           )}
         >
           <MarkdownLite text={message.text} />
-          {!message.isUserMessage && (
+          {buttonsActive && !message.isUserMessage && (
             <div className="flex gap-2 self-end">
               <Button
                 disabled={isLoading}
