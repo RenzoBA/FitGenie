@@ -2,7 +2,7 @@ import { FC } from "react";
 
 const MessageLikedSkeleton: FC = () => {
   return (
-    <div className="flex flex-none flex-col gap-4 border border-input rounded-lg p-5 w-auto h-80 bg-card transition-all shadow">
+    <div className="flex flex-none flex-col gap-4 rounded-lg p-5 w-auto h-80 bg-card transition-all shadow">
       <div className="flex flex-row items-start justify-between">
         <div className="flex flex-row gap-2 items-center">
           <div className="bg-accent rounded-full h-10 w-10 animate-pulse" />
